@@ -178,7 +178,7 @@
 
     <!-- 場景選擇 Modal -->
     <div id="scene-modal" class="hidden absolute inset-0 z-[60] bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-zinc-900 border border-zinc-7700 w-full max-w-md rounded-3xl p-5 shadow-2xl flex flex-col max-h-[90vh]">
+        <div class="bg-zinc-900 border border-zinc-700 w-full max-w-md rounded-3xl p-5 shadow-2xl flex flex-col max-h-[90vh]">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-2xl font-black text-white">選擇戰場</h2>
                 <button onclick="closeModals()" class="text-zinc-500 hover:text-white text-xl p-2"><i class="fa-solid fa-xmark"></i></button>
@@ -190,7 +190,16 @@
                     <div class="flex gap-3 h-24">
                         <div class="w-28 sm:w-32 bg-amber-900 rounded-xl overflow-hidden relative border border-amber-700 flex-shrink-0">
                             <div class="absolute inset-0 bg-gradient-to-b from-[#78909c] to-[#4e2c14]"></div>
-                            <i class="fa-solid fa-cake-candles absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-pink-400 text-3xl drop-shadow-md"></i>
+                            <!-- 高解析度 SVG 縮圖 -->
+                            <div class="absolute inset-0 flex items-center justify-center p-2">
+                                <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md">
+                                    <ellipse cx="50" cy="70" rx="35" ry="15" fill="black" opacity="0.4" />
+                                    <ellipse cx="50" cy="50" rx="30" ry="12" fill="#db2777" />
+                                    <rect x="20" y="50" width="60" height="15" fill="#f472b6" />
+                                    <ellipse cx="50" cy="65" rx="30" ry="12" fill="#9d174d" />
+                                    <circle cx="50" cy="35" r="8" fill="#ef4444" />
+                                </svg>
+                            </div>
                         </div>
                         <div class="flex flex-col justify-center flex-1">
                             <h3 class="font-bold text-base sm:text-lg text-white">廚房桌面</h3>
@@ -205,7 +214,18 @@
                     <div class="flex gap-3 h-24">
                         <div class="w-28 sm:w-32 bg-slate-800 rounded-xl overflow-hidden relative border border-slate-600 flex-shrink-0">
                             <div class="absolute inset-0 bg-gradient-to-br from-[#1e293b] to-[#0f172a]"></div>
-                            <i class="fa-solid fa-cookie-bite absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-amber-500 text-3xl drop-shadow-md"></i>
+                            <!-- 高解析度 SVG 縮圖 -->
+                            <div class="absolute inset-0 flex items-center justify-center p-2">
+                                <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md">
+                                    <ellipse cx="50" cy="75" rx="40" ry="15" fill="black" opacity="0.4" />
+                                    <circle cx="50" cy="50" r="35" fill="#d97706" />
+                                    <circle cx="35" cy="35" r="5" fill="#451a03" />
+                                    <circle cx="60" cy="45" r="6" fill="#451a03" />
+                                    <circle cx="45" cy="65" r="4" fill="#451a03" />
+                                    <circle cx="65" cy="60" r="5" fill="#451a03" />
+                                    <circle cx="30" cy="55" r="5" fill="#451a03" />
+                                </svg>
+                            </div>
                         </div>
                         <div class="flex flex-col justify-center flex-1">
                             <h3 class="font-bold text-base sm:text-lg text-white">客廳地毯</h3>
@@ -224,7 +244,14 @@
                     <div class="flex gap-3 h-24">
                         <div class="w-28 sm:w-32 bg-red-900 rounded-xl overflow-hidden relative border border-red-700 flex-shrink-0">
                             <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjN2YxZDFkIi8+PHJlY3QgeD0iMTAiIHk9IjEwIiB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIGZpbGw9IiM3ZjFkMWQiLz48cmVjdCB4PSIxMCIgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjOTkxYjFiIi8+PHJlY3QgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iIzk5MWIxYiIvPjwvc3ZnPg==')] opacity-50"></div>
-                            <i class="fa-solid fa-drumstick-bite absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-orange-400 text-3xl drop-shadow-md"></i>
+                            <!-- 高解析度 SVG 縮圖 -->
+                            <div class="absolute inset-0 flex items-center justify-center p-2">
+                                <svg viewBox="0 0 100 100" class="w-full h-full drop-shadow-md">
+                                    <ellipse cx="50" cy="75" rx="45" ry="15" fill="black" opacity="0.4" />
+                                    <path d="M 30 50 C 30 30, 70 30, 80 50 C 90 70, 70 80, 50 80 C 30 80, 20 70, 30 50 Z" fill="#b45309" />
+                                    <path d="M 75 55 C 85 60, 95 50, 95 45 C 95 40, 85 45, 80 50" fill="#fffbeb" stroke="#78350f" stroke-width="2" />
+                                </svg>
+                            </div>
                         </div>
                         <div class="flex flex-col justify-center flex-1">
                             <h3 class="font-bold text-base sm:text-lg text-white">溫馨餐桌</h3>
@@ -339,7 +366,6 @@
 
                 <!-- PVP 對戰模式專屬狀態 -->
                 <div id="pvp-stats" class="hidden gap-2 sm:gap-3 flex-wrap">
-                    <!-- 我的血量 -->
                     <div class="bg-black/70 backdrop-blur-md px-3 py-1 rounded-xl border border-emerald-500/30 flex flex-col items-start gap-0.5 shadow-lg">
                         <span class="text-emerald-400 text-[10px] font-bold"><i class="fa-solid fa-shield-heart mr-0.5"></i>我的蛋糕</span>
                         <div class="flex items-center gap-1">
@@ -349,7 +375,6 @@
                             <span id="pvp-my-hp-text" class="text-[9px] text-zinc-300 font-mono">100%</span>
                         </div>
                     </div>
-                    <!-- 對手血量 -->
                     <div class="bg-black/70 backdrop-blur-md px-3 py-1 rounded-xl border border-red-500/30 flex flex-col items-start gap-0.5 shadow-lg">
                         <span class="text-red-400 text-[10px] font-bold"><i class="fa-solid fa-shield-heart mr-0.5"></i>對手蛋糕</span>
                         <div class="flex items-center gap-1">
@@ -359,7 +384,6 @@
                             <span id="pvp-opp-hp-text" class="text-[9px] text-zinc-300 font-mono">100%</span>
                         </div>
                     </div>
-                    <!-- PVP 對戰幣 -->
                     <div class="bg-black/70 backdrop-blur-md px-3 py-1.5 rounded-xl border border-blue-500/30 flex items-center gap-1.5 shadow-lg">
                         <i class="fa-solid fa-money-bill-transfer text-blue-400 text-sm"></i>
                         <span class="text-zinc-400 text-[10px]">對戰幣:</span>
@@ -398,6 +422,13 @@
                 </radialGradient>
                 <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#fbbf24" /><stop offset="100%" stop-color="#b45309" />
+                </linearGradient>
+                <!-- 至尊黃金拖鞋流金漸層 -->
+                <linearGradient id="super-gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#fffbeb" />
+                    <stop offset="30%" stop-color="#fef08a" />
+                    <stop offset="70%" stop-color="#eab308" />
+                    <stop offset="100%" stop-color="#ca8a04" />
                 </linearGradient>
                 <linearGradient id="tank-grad" x1="0%" y1="0%" x2="100%" y2="100%">
                     <stop offset="0%" stop-color="#52525b" /><stop offset="100%" stop-color="#18181b" />
@@ -522,7 +553,7 @@
     </div>
 
     <!-- PVP 懸浮道具欄 (在遊戲右側，對戰時才有用) -->
-    <div id="pvp-traps-panel" class="hidden absolute right-3 top-[35%] z-40 flex flex-col gap-3 pointer-events-auto">
+    <div id="pvp-traps-panel" class="hidden absolute right-3 top-[30%] z-40 flex flex-col gap-3 pointer-events-auto">
         <!-- 致盲迷霧 -->
         <button onclick="buyPvPTrap('darken')" id="btn-trap-darken" class="group bg-zinc-900/90 hover:bg-zinc-800 border-2 border-purple-500/50 rounded-2xl p-2.5 flex flex-col items-center justify-center w-16 h-16 sm:w-18 sm:h-18 shadow-2xl active:scale-95 transition">
             <i class="fa-solid fa-eye-slash text-purple-400 text-base sm:text-lg group-hover:animate-pulse"></i>
@@ -535,6 +566,12 @@
             <span class="text-[9px] font-bold text-red-200 mt-1">小強突襲</span>
             <span class="text-[9px] font-mono font-black text-yellow-400 mt-0.5">$150</span>
         </button>
+        <!-- 小強派對 -->
+        <button onclick="buyPvPTrap('party')" id="btn-trap-party" class="group bg-zinc-900/90 hover:bg-zinc-800 border-2 border-amber-500/50 rounded-2xl p-2.5 flex flex-col items-center justify-center w-16 h-16 sm:w-18 sm:h-18 shadow-2xl active:scale-95 transition">
+            <i class="fa-solid fa-champagne-glasses text-amber-400 text-base sm:text-lg group-hover:rotate-12"></i>
+            <span class="text-[9px] font-bold text-amber-200 mt-1">小強派對</span>
+            <span class="text-[9px] font-mono font-black text-yellow-400 mt-0.5">$250</span>
+        </button>
     </div>
 
     <!-- 底部面板 -->
@@ -544,7 +581,7 @@
                 <i class="fa-solid fa-cookie-bite text-lg"></i><span>餵食</span>
             </button>
             <button id="tool-hand" class="tool-btn flex-1 py-2 px-3 rounded-xl bg-zinc-800 text-zinc-400 font-bold text-xs sm:text-sm flex flex-col items-center gap-1 transition">
-                <i class="fa-solid fa-hand-pointer text-lg"></i><span>互動</span>
+                <i class="fa-solid fa-hand-pointer text-lg"></i><span>互動/抓取</span>
             </button>
             <button id="tool-spray" class="tool-btn flex-1 py-2 px-3 rounded-xl bg-zinc-800 text-zinc-400 font-bold text-xs sm:text-sm flex flex-col items-center gap-1 transition">
                 <i class="fa-solid fa-spray-can text-lg"></i><span>驅趕</span>
@@ -628,7 +665,8 @@
             slipper: { name: '藍色拖鞋', icon: 'fa-shoe-prints', color: 'text-blue-400', glow: 'rgba(59,130,246,0.8)', baseDmg: 1, baseRadius: 35, baseCd: 0, cdReduction: 0, baseCost: 0, upgradeBase: 10 },
             grandma_slipper: { name: '阿嬤紅拖', icon: 'fa-shoe-prints', color: 'text-red-500', glow: 'rgba(239,68,68,0.8)', baseDmg: 2, baseRadius: 60, baseCd: 1.0, cdReduction: 0.05, baseCost: 50, upgradeBase: 25 },
             newspaper: { name: '橫掃報紙', icon: 'fa-newspaper', color: 'text-gray-300', glow: 'rgba(229,231,235,0.8)', baseDmg: 1, baseRadius: 45, baseCd: 0.8, cdReduction: 0.04, baseCost: 120, upgradeBase: 40 },
-            pesticide_bomb: { name: '化學毒霧', icon: 'fa-spray-can', color: 'text-emerald-400', glow: 'rgba(16,185,129,0.8)', baseDmg: 5, baseRadius: 110, baseCd: 4.0, cdReduction: 0.2, baseCost: 250, upgradeBase: 60 }
+            pesticide_bomb: { name: '化學毒霧', icon: 'fa-spray-can', color: 'text-emerald-400', glow: 'rgba(16,185,129,0.8)', baseDmg: 5, baseRadius: 110, baseCd: 4.0, cdReduction: 0.2, baseCost: 250, upgradeBase: 60 },
+            golden_slipper: { name: '至尊黃金拖鞋', icon: 'fa-shoe-prints', color: 'text-yellow-400', glow: 'rgba(251,191,36,0.9)', baseDmg: 8, baseRadius: 50, baseCd: 0.4, cdReduction: 0.02, baseCost: 3000, upgradeBase: 150 }
         };
         const SCENE_CONFIG = {
             kitchen: { targetId: 'target-cake', bgId: 'scene-kitchen' },
@@ -668,7 +706,7 @@
             exp: parseInt(localStorage.getItem('roach_exp')) || 0,
             coins: parseInt(localStorage.getItem('roach_coins')) || 0,
             weapons: JSON.parse(localStorage.getItem('roach_weapons')) || ['slipper'],
-            w_levels: JSON.parse(localStorage.getItem('roach_w_levels')) || { slipper: 1, grandma_slipper: 1, newspaper: 1, pesticide_bomb: 1 },
+            w_levels: JSON.parse(localStorage.getItem('roach_w_levels')) || { slipper: 1, grandma_slipper: 1, newspaper: 1, pesticide_bomb: 1, golden_slipper: 1 },
             scenes: JSON.parse(localStorage.getItem('roach_scenes')) || ['kitchen'],
             kills: JSON.parse(localStorage.getItem('roach_kills')) || { normal: 0, tank: 0, golden: 0, ninja: 0 },
             items: JSON.parse(localStorage.getItem('roach_items')) || { plastic_wrap: 0 }
@@ -677,7 +715,7 @@
         let gameState = {
             active: false, mode: 'battle', scene: 'kitchen',
             score: 0, sessionCoins: 0, targetHp: 100,
-            weapon: 'slipper', cooldowns: { slipper: 0, grandma_slipper: 0, newspaper: 0, pesticide_bomb: 0 },
+            weapon: 'slipper', cooldowns: { slipper: 0, grandma_slipper: 0, newspaper: 0, pesticide_bomb: 0, golden_slipper: 0 },
             tool: 'food', combo: 0, lastKillTime: 0,
             time: 8 * 60,
             isNight: false, timeSpeed: 2,
@@ -997,7 +1035,7 @@
 
             document.getElementById('pvp-status-box').classList.remove('hidden');
             document.getElementById('pvp-status-text').textContent = "連線中...";
-            document.getElementById('pvp-status-detail').textContent = "正在建立與 MQTTGO.io 的安全通訊...";
+            document.getElementById('pvp-status-detail').textContent = "正在連接至對戰伺服器...";
             
             const btn = document.getElementById('pvp-connect-btn');
             btn.disabled = true;
@@ -1098,6 +1136,8 @@
                 applyDarkenTrap();
             } else if (msg.type === 'trap_swarm') {
                 applySwarmTrap();
+            } else if (msg.type === 'trap_party') {
+                applyPartyTrap();
             } else if (msg.type === 'game_over_lose') {
                 triggerPvPWin();
             }
@@ -1118,8 +1158,10 @@
             // Highlight buttons when affordable
             const b1 = document.getElementById('btn-trap-darken');
             const b2 = document.getElementById('btn-trap-swarm');
+            const b3 = document.getElementById('btn-trap-party');
             if (pvpState.pvpCoins >= 100) { b1.classList.remove('opacity-50'); b1.classList.add('border-purple-500'); } else { b1.classList.add('opacity-50'); }
             if (pvpState.pvpCoins >= 150) { b2.classList.remove('opacity-50'); b2.classList.add('border-red-500'); } else { b2.classList.add('opacity-50'); }
+            if (pvpState.pvpCoins >= 250) { b3.classList.remove('opacity-50'); b3.classList.add('border-amber-500'); } else { b3.classList.add('opacity-50'); }
         }
 
         function startPvPGameSession() {
@@ -1161,7 +1203,7 @@
             gameState.sessionCoins = 0;
             gameState.targetHp = 100;
             gameState.combo = 0;
-            gameState.cooldowns = { slipper: 0, grandma_slipper: 0, newspaper: 0, pesticide_bomb: 0 };
+            gameState.cooldowns = { slipper: 0, grandma_slipper: 0, newspaper: 0, pesticide_bomb: 0, golden_slipper: 0 };
             gameState.shieldActive = false;
             gameState.shieldEndTime = 0;
 
@@ -1204,6 +1246,19 @@
                     playSound.damage();
                     alert('對戰幣不足！(需要 $150)');
                 }
+            } else if (type === 'party') {
+                if (pvpState.pvpCoins >= 250) {
+                    pvpState.pvpCoins -= 250;
+                    updatePvpCoinsUI();
+                    sendPvpMsg({
+                        type: 'trap_party',
+                        sender: pvpState.myPlayerId
+                    });
+                    playSound.success();
+                } else {
+                    playSound.damage();
+                    alert('對戰幣不足！(需要 $250)');
+                }
             }
         }
 
@@ -1233,6 +1288,35 @@
             for (let i = 0; i < count; i++) {
                 spawnRoach();
             }
+
+            setTimeout(() => {
+                notif.classList.add('hidden');
+            }, 3000);
+        }
+
+        function applyPartyTrap() {
+            playSound.levelup();
+            const notif = document.getElementById('pvp-trap-notification');
+            document.getElementById('pvp-notif-msg').textContent = "⚠️對手在角落舉辦了小強派對！⚠️";
+            notif.classList.remove('hidden');
+
+            // 從四個角落各派出一些小強（每邊派出 1~3 隻，總計 5~10 隻）
+            const corners = [
+                {x: 20, y: 70},                  // 左上
+                {x: width - 20, y: 70},          // 右上
+                {x: 20, y: height - 20},         // 左下
+                {x: width - 20, y: height - 20}  // 右下
+            ];
+
+            corners.forEach(corner => {
+                const count = 1 + Math.floor(Math.random() * 2.5); // 1~3 隻
+                for (let i = 0; i < count; i++) {
+                    // 給予一點偏移避免重疊
+                    const rx = corner.x + (Math.random() - 0.5) * 15;
+                    const ry = corner.y + (Math.random() - 0.5) * 15;
+                    roaches.push(new Cockroach(rx, ry));
+                }
+            });
 
             setTimeout(() => {
                 notif.classList.add('hidden');
@@ -1502,7 +1586,12 @@
             }
             update(time) {
                 if(this.state==='dead') return;
-                if(this.state==='dragged') { this.angle=(this.angle+10)%360; this.dom.setAttribute('transform', `translate(${this.x},${this.y}) rotate(${this.angle})`); return; }
+                // 拖曳狀態，更新旋轉角，但不處理 AI
+                if(this.state==='dragged') { 
+                    this.angle=(this.angle+10)%360; 
+                    this.dom.setAttribute('transform', `translate(${this.x},${this.y}) rotate(${this.angle})`); 
+                    return; 
+                }
                 
                 if(gameState.mode==='sandbox') this.aiSandbox(); else this.aiBattle();
                 
@@ -1554,23 +1643,40 @@
             aiSandbox() {
                 if(this.state==='eating') {
                     this.vx*=0.8; this.vy*=0.8; this.eatingTimer++;
-                    if(this.targetCrumb && !crumbs.includes(this.targetCrumb)) { this.state='wandering'; this.targetCrumb=null; return; }
+                    if(this.targetCrumb && !crumbs.includes(this.targetCrumb)) { 
+                        this.state='wandering'; this.targetCrumb=null; return; 
+                    }
                     if(this.eatingTimer%20===0) {
                         playSound.eat(); createSparkle(this.x, this.y, '#fbbf24');
-                        if(this.targetCrumb && this.targetCrumb.bite()) { this.state='wandering'; this.targetCrumb=null; }
+                        if(this.targetCrumb && this.targetCrumb.bite()) { 
+                            this.state='wandering'; this.targetCrumb=null; 
+                        }
                     }
                     this.x+=this.vx; this.y+=this.vy; return;
                 }
+                
                 if(crumbs.length>0) {
-                    let cls=null, md=Infinity; crumbs.forEach(c=>{ const d=Math.hypot(c.x-this.x,c.y-this.y); if(d<md){md=d;cls=c;} });
+                    let cls=null, md=Infinity; 
+                    crumbs.forEach(c=>{ const d=Math.hypot(c.x-this.x,c.y-this.y); if(d<md){md=d;cls=c;} });
                     if(md<400 && cls){ this.targetCrumb=cls; this.state='chasing'; }
                 }
+                
                 if(this.state==='chasing' && this.targetCrumb) {
                     const dx=this.targetCrumb.x-this.x, dy=this.targetCrumb.y-this.y, d=Math.hypot(dx,dy);
-                    if(!crumbs.includes(this.targetCrumb)) { this.state='wandering'; this.targetCrumb=null; }
-                    else if(d<20){ this.state='eating'; this.eatingTimer=0; }
-                    else { this.vx+=(dx/d)*0.3; this.vy+=(dy/d)*0.3; }
+                    if(!crumbs.includes(this.targetCrumb)) { 
+                        this.state='wandering'; this.targetCrumb=null; 
+                    }
+                    else if(d<25) { // 到達食物距離
+                        this.state='eating'; this.eatingTimer=0; 
+                        this.vx=0; this.vy=0; // 停下來吃
+                    }
+                    else { 
+                        this.vx+=(dx/d)*0.4; this.vy+=(dy/d)*0.4; 
+                        const s = Math.hypot(this.vx, this.vy);
+                        if (s > this.speed) { this.vx = (this.vx/s)*this.speed; this.vy = (this.vy/s)*this.speed; }
+                    }
                 } else {
+                    // 漫遊
                     if(Math.random()<0.04) { const a=Math.random()*Math.PI*2; this.vx=Math.cos(a)*this.speed; this.vy=Math.sin(a)*this.speed; }
                     const s=Math.hypot(this.vx,this.vy);
                     if(s<0.5){ this.vx=(Math.random()-0.5)*this.speed; this.vy=(Math.random()-0.5)*this.speed; }
@@ -1627,9 +1733,9 @@
             t.style.transition='all 800ms ease-out'; containers.waves.appendChild(t);
             requestAnimationFrame(()=>{ t.setAttribute('y',y-65); t.setAttribute('opacity','0'); }); setTimeout(()=>t.remove(), 820);
         }
-        function createWaveRing(x,y) {
+        function createWaveRing(x,y,color='rgba(255,255,255,0.5)') {
             const c = document.createElementNS('http://www.w3.org/2000/svg','circle'); c.setAttribute('cx',x); c.setAttribute('cy',y); c.setAttribute('r','5');
-            c.setAttribute('fill','none'); c.setAttribute('stroke','rgba(255,255,255,0.5)'); c.setAttribute('stroke-width','2');
+            c.setAttribute('fill','none'); c.setAttribute('stroke',color); c.setAttribute('stroke-width','2');
             c.style.transition='all 300ms cubic-bezier(0.1,0.8,0.3,1)'; containers.waves.appendChild(c);
             requestAnimationFrame(()=>{ c.setAttribute('r','45'); c.setAttribute('stroke-width','0.5'); c.setAttribute('stroke','rgba(255,255,255,0)'); }); setTimeout(()=>c.remove(), 310);
         }
@@ -1688,7 +1794,18 @@
                 if(!hitAny) triggerShake(); return;
             }
 
-            if(!isSwipe) { createWaveRing(x,y); if(gameState.weapon==='newspaper') playSound.swish(); }
+            // 特效與打擊感處理
+            if(!isSwipe) { 
+                if (gameState.weapon === 'golden_slipper') {
+                    // 黃金流光打擊圈
+                    createWaveRing(x, y, 'rgba(251,191,36,0.9)'); 
+                    playSound.success();
+                    createSparkle(x, y, '#fbbf24');
+                } else {
+                    createWaveRing(x,y); 
+                    if(gameState.weapon==='newspaper') playSound.swish(); 
+                }
+            }
 
             let hitAny=false;
             if(isSwipe) {
@@ -1729,10 +1846,32 @@
             else {
                 if(gameState.tool==='food') { playSound.eat(); crumbs.push(new Crumb(pos.x,pos.y)); }
                 else if(gameState.tool==='hand') {
-                    let f=null; for(let i=roaches.length-1;i>=0;i--){ if(Math.hypot(roaches[i].x-pos.x,roaches[i].y-pos.y)<32){f=roaches[i];break;} }
-                    if(f){dragTarget=f; dragTarget.state='dragged'; dragTarget.vx=0; dragTarget.vy=0; playSound.eat();}
-                    else{ createWaveRing(pos.x,pos.y); roaches.forEach(r=>{ if(Math.hypot(r.x-pos.x,r.y-pos.y)<120){const a=Math.atan2(r.y-pos.y,r.x-pos.x);r.vx=Math.cos(a)*r.speed*2;r.vy=Math.sin(a)*r.speed*2;} }); }
-                } else if(gameState.tool==='spray') { playSound.boom(); createSpray(pos.x,pos.y); roaches.forEach(r=>{const dx=r.x-pos.x,dy=r.y-pos.y,d=Math.hypot(dx,dy);if(d<100){r.vx+=(dx/d)*2;r.vy+=(dy/d)*2;r.state='wandering';r.targetCrumb=null;}}); }
+                    // 抓取小強
+                    let f=null; 
+                    for(let i=roaches.length-1; i>=0; i--){ 
+                        if(Math.hypot(roaches[i].x-pos.x,roaches[i].y-pos.y) < 45) { // 加大抓取半徑
+                            f=roaches[i]; break;
+                        } 
+                    }
+                    if(f) {
+                        dragTarget=f; dragTarget.state='dragged'; dragTarget.vx=0; dragTarget.vy=0; playSound.eat();
+                    }
+                    else { 
+                        createWaveRing(pos.x,pos.y); 
+                        roaches.forEach(r=>{ 
+                            if(Math.hypot(r.x-pos.x,r.y-pos.y)<120){
+                                const a=Math.atan2(r.y-pos.y,r.x-pos.x);
+                                r.vx=Math.cos(a)*r.speed*2; r.vy=Math.sin(a)*r.speed*2;
+                            } 
+                        }); 
+                    }
+                } else if(gameState.tool==='spray') { 
+                    playSound.boom(); createSpray(pos.x,pos.y); 
+                    roaches.forEach(r=>{
+                        const dx=r.x-pos.x,dy=r.y-pos.y,d=Math.hypot(dx,dy);
+                        if(d<100){r.vx+=(dx/d)*2;r.vy+=(dy/d)*2;r.state='wandering';r.targetCrumb=null;}
+                    }); 
+                }
             }
         }
         function onMove(e) {
@@ -1740,11 +1879,38 @@
             if(gameState.mode==='battle' && gameState.weapon==='newspaper' && gameState.cooldowns['newspaper']<=performance.now()) {
                 if(Math.hypot(pos.x-lastSwipe.x, pos.y-lastSwipe.y)>25) { triggerAttack(pos.x,pos.y,true); lastSwipe=pos; }
             } else if(gameState.mode==='sandbox') {
-                if(gameState.tool==='hand' && dragTarget){ e.preventDefault(); dragTarget.x=pos.x; dragTarget.y=pos.y; }
-                else if(gameState.tool==='spray' && Math.random()<0.2) { createSpray(pos.x,pos.y); roaches.forEach(r=>{const dx=r.x-pos.x,dy=r.y-pos.y,d=Math.hypot(dx,dy);if(d<100){r.vx+=(dx/d)*2;r.vy+=(dy/d)*2;r.state='wandering';r.targetCrumb=null;}}); }
+                if(gameState.tool==='hand' && dragTarget) { 
+                    e.preventDefault(); 
+                    // 計算拖曳甩動的速度差
+                    dragTarget.vx = pos.x - dragTarget.x;
+                    dragTarget.vy = pos.y - dragTarget.y;
+                    dragTarget.x = pos.x; 
+                    dragTarget.y = pos.y; 
+                }
+                else if(gameState.tool==='spray' && Math.random()<0.2) { 
+                    createSpray(pos.x,pos.y); 
+                    roaches.forEach(r=>{
+                        const dx=r.x-pos.x, dy=r.y-pos.y, d=Math.hypot(dx,dy);
+                        if(d<100){r.vx+=(dx/d)*2;r.vy+=(dy/d)*2;r.state='wandering';r.targetCrumb=null;}
+                    }); 
+                }
             }
         }
-        function onUp(e) { if(dragTarget){dragTarget.state='wandering';dragTarget.vx=(Math.random()-0.5)*8;dragTarget.vy=(Math.random()-0.5)*8;dragTarget=null;} }
+        function onUp(e) { 
+            if(dragTarget) {
+                dragTarget.state='wandering';
+                // 甩動拋出物理限速
+                let throwSpeed = Math.hypot(dragTarget.vx, dragTarget.vy);
+                if (throwSpeed > 15) {
+                    dragTarget.vx = (dragTarget.vx/throwSpeed)*15;
+                    dragTarget.vy = (dragTarget.vy/throwSpeed)*15;
+                } else if (throwSpeed < 1) {
+                    dragTarget.vx = (Math.random()-0.5)*8;
+                    dragTarget.vy = (Math.random()-0.5)*8;
+                }
+                dragTarget=null;
+            } 
+        }
 
         svg.addEventListener('mousedown', onDown); svg.addEventListener('mousemove', onMove); window.addEventListener('mouseup', onUp);
         svg.addEventListener('touchstart', onDown, {passive:false}); svg.addEventListener('touchmove', onMove, {passive:false}); window.addEventListener('touchend', onUp);
@@ -1759,6 +1925,9 @@
             if(gameState.weapon==='grandma_slipper') content=`<svg viewBox="0 0 100 100" class="w-full h-full scale-125"><path d="M 30 70 C 25 50, 30 20, 50 15 C 70 20, 75 50, 70 70 C 65 85, 50 90, 50 90 Z" fill="#ef4444" stroke="#b91c1c" stroke-width="3"/></svg>`;
             if(gameState.weapon==='newspaper'){ content=`<svg viewBox="0 0 100 100" class="w-full h-full rotate-12"><rect x="35" y="10" width="30" height="80" rx="4" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/></svg>`; a=-45; }
             if(gameState.weapon==='pesticide_bomb'){ content=`<svg viewBox="0 0 100 100" class="w-full h-full scale-110"><rect x="35" y="30" width="30" height="55" rx="8" fill="#10b981" stroke="#047857" stroke-width="3"/></svg>`; a=15; }
+            if(gameState.weapon==='golden_slipper') {
+                content=`<svg viewBox="0 0 100 100" class="w-full h-full scale-125 filter drop-shadow-[0_0_8px_rgba(251,191,36,0.9)]"><path d="M 30 70 C 25 50, 30 20, 50 15 C 70 20, 75 50, 70 70 C 65 85, 50 90, 50 90 Z" fill="url(#super-gold-grad)" stroke="#b45309" stroke-width="3"/></svg>`;
+            }
             ws.innerHTML=content; ws.style.left=`${x-48}px`; ws.style.top=`${y-48}px`; ws.style.transform=`scale(1.2) rotate(${a}deg)`; ws.style.opacity='1';
             setTimeout(()=>{ws.style.transform=`scale(0.8) rotate(0deg)`;}, 60); setTimeout(()=>{ws.style.opacity='0';}, 250);
         }
@@ -1832,7 +2001,16 @@
         }
 
         function spawnRoach() {
-            let rx,ry; if(Math.random()<0.5){rx=Math.random()<0.5?-30:width+30; ry=65+Math.random()*(height-85);}else{rx=Math.random()*width; ry=Math.random()<0.5?-30:height+30; if(ry<55)ry=65;}
+            let rx,ry; 
+            if(gameState.mode === 'sandbox') {
+                // 生態箱內直接向中間產生，避免在畫面外被卡住
+                rx = width/2 + (Math.random()-0.5)*(width*0.8);
+                ry = height/2 + (Math.random()-0.5)*(height*0.8);
+            } else {
+                if(Math.random()<0.5){rx=Math.random()<0.5?-30:width+30; ry=65+Math.random()*(height-85);}
+                else{rx=Math.random()*width; ry=Math.random()<0.5?-30:height+30; if(ry<55)ry=65;}
+            }
+            
             roaches.push(new Cockroach(rx,ry));
             if(gameState.mode==='sandbox') document.getElementById('roach-count-text').textContent = roaches.length;
         }
@@ -1861,7 +2039,7 @@
 
         function startGameSession() {
             clearEntities(); gameState.score=0; gameState.sessionCoins=0; gameState.targetHp=100; gameState.combo=0;
-            gameState.cooldowns = { slipper:0, grandma_slipper:0, newspaper:0, pesticide_bomb:0 };
+            gameState.cooldowns = { slipper:0, grandma_slipper:0, newspaper:0, pesticide_bomb:0, golden_slipper:0 };
             gameState.shieldActive = false; gameState.shieldEndTime = 0;
             
             ['kitchen', 'living', 'dining'].forEach(s => {
@@ -1879,7 +2057,8 @@
 
         function startSandboxSession() {
             clearEntities(); gameState.active=true; playSound.success();
-            for(let i=0;i<10;i++) spawnRoach(); document.getElementById('roach-count-text').textContent = roaches.length;
+            for(let i=0;i<10;i++) spawnRoach(); 
+            document.getElementById('roach-count-text').textContent = roaches.length;
             gameState.timeSpeed = 1;
         }
 
