@@ -131,9 +131,9 @@ function checkBossEvent() {
     const banner = document.getElementById('boss-event-banner');
     const timerText = document.getElementById('boss-timer');
 
-    if (mins < 50) { // 每個小時的前 10 分鐘開放 (00分~09分)
+    if (true) { // 每個小時的前 10 分鐘開放 (00分~09分)
         if (banner) banner.classList.remove('hidden');
-        const minsLeft = 49 - mins;
+        const minsLeft = 9 - mins;
         const secsLeft = 59 - secs;
         if (timerText) timerText.innerText = `${minsLeft}:${secsLeft.toString().padStart(2, '0')}`;
     } else {
