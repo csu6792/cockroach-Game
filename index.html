@@ -141,21 +141,6 @@
         <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
         
         <div class="z-10 flex flex-col items-center w-full max-w-md">
-            
-			<div id="boss-event-banner" class="hidden fixed bottom-28 right-4 z-40 pointer-events-none animate-bounce">
-    <button onclick="startBossMode()" class="pointer-events-auto flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-br from-red-600 via-red-700 to-black rounded-full border-2 border-yellow-400 shadow-[0_0_15px_rgba(220,38,38,0.7)] hover:scale-110 active:scale-95 transition relative group">
-        <i class="fa-solid fa-skull-crossbones text-2xl text-yellow-400 animate-pulse"></i>
-        <span class="text-[10px] font-black text-white tracking-tighter mt-0.5">BOSS 戰</span>
-        
-        <div class="absolute -bottom-2 bg-yellow-500 text-black font-mono font-bold text-[9px] px-1.5 py-0.5 rounded-full border border-zinc-900 shadow">
-            <span id="boss-timer">10:00</span>
-        </div>
-        
-        <div class="absolute right-24 bg-zinc-900/90 text-white text-xs px-2 py-1 rounded-md border border-zinc-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition pointer-events-none">
-            🔥 限時 10 分鐘！點擊立刻開戰！
-        </div>
-    </button>
-</div>
 			
 			<!-- Title -->
             <div class="mb-5 text-center pop-animation">
@@ -778,6 +763,21 @@
             <button onclick="backToLobby()" class="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-bold text-lg py-3 rounded-xl transition">返回大廳</button>
         </div>
     </div>
+
+	<div id="boss-event-banner" class="hidden fixed bottom-28 right-4 z-40 pointer-events-none animate-bounce">
+    <button onclick="startBossMode()" class="pointer-events-auto flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-br from-red-600 via-red-700 to-black rounded-full border-2 border-yellow-400 shadow-[0_0_15px_rgba(220,38,38,0.7)] hover:scale-110 active:scale-95 transition relative group">
+        <i class="fa-solid fa-skull-crossbones text-2xl text-yellow-400 animate-pulse"></i>
+        <span class="text-[10px] font-black text-white tracking-tighter mt-0.5">BOSS 戰</span>
+        
+        <div class="absolute -bottom-2 bg-yellow-500 text-black font-mono font-bold text-[9px] px-1.5 py-0.5 rounded-full border border-zinc-900 shadow">
+            <span id="boss-timer">10:00</span>
+        </div>
+        
+        <div class="absolute right-24 bg-zinc-900/90 text-white text-xs px-2 py-1 rounded-md border border-zinc-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition pointer-events-none">
+            🔥 限時 10 分鐘！點擊立刻開戰！
+        </div>
+    </button>
+</div>
 
     <script src="./main.js"></script>
 	<script>
