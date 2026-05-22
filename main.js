@@ -144,7 +144,7 @@ let isBossMode = false; // 標記當前是否為 BOSS 挑戰模式
 //setInterval(checkBossEvent, 1000);
 //window.addEventListener('DOMContentLoaded', checkBossEvent);
 
-//function startBossMode() {alert("即將開放"）；｝
+function startBossMode() {alert("即將開放"）；｝
 
         // ==========================================
         // PVP State Variables
