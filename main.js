@@ -144,6 +144,8 @@ function checkBossEvent() {
 setInterval(checkBossEvent, 1000);
 window.addEventListener('DOMContentLoaded', checkBossEvent);
 
+function startBossMode() {alert("即將開放"）；｝
+
         // ==========================================
         // PVP State Variables
         // ==========================================
