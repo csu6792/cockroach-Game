@@ -97,6 +97,19 @@
 			equipped_shop_title: localStorage.getItem('roach_equipped_shop_title') || ''
         };
 
+        // ==========================================
+// ★ 加入這段：自動修復與補齊缺失的武器等級存檔
+// ==========================================
+Object.keys(WEAPON_CONFIG).forEach(w => {
+    // 如果發現某個武器沒有等級紀錄，或是變成 NaN，就自動把它設回 1 等
+    if (typeof db.w_levels[w] === 'undefined' || isNaN(db.w_levels[w]) || db.w_levels[w] === null) {
+        db.w_levels[w] = 1;
+    }
+});
+
+
+saveDB();
+
         let gameState = {
             active: false, mode: 'battle', scene: 'kitchen',
             score: 0, sessionCoins: 0, targetHp: 100,
