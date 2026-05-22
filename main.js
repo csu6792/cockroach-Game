@@ -120,6 +120,30 @@ saveDB();
             shieldActive: false, shieldEndTime: 0
         };
 
+        // ... 貼在 let gameState = { ... }; 的正下方 ...
+
+let isBossMode = false; // 標記當前是否為 BOSS 挑戰模式
+
+function checkBossEvent() {
+    const now = new Date();
+    const mins = now.getMinutes();
+    const secs = now.getSeconds();
+    const banner = document.getElementById('boss-event-banner');
+    const timerText = document.getElementById('boss-timer');
+
+    if (mins < 50) { // 每個小時的前 10 分鐘開放 (00分~09分)
+        if (banner) banner.classList.remove('hidden');
+        const minsLeft = 9 - mins;
+        const secsLeft = 59 - secs;
+        if (timerText) timerText.innerText = `${minsLeft}:${secsLeft.toString().padStart(2, '0')}`;
+    } else {
+        if (banner) banner.classList.add('hidden');
+    }
+}
+// 啟動每秒檢查
+setInterval(checkBossEvent, 1000);
+window.addEventListener('DOMContentLoaded', checkBossEvent);
+
         // ==========================================
         // PVP State Variables
         // ==========================================
