@@ -133,7 +133,7 @@ function checkBossEvent() {
 
     if (mins < 50) { // 每個小時的前 10 分鐘開放 (00分~09分)
         if (banner) banner.classList.remove('hidden');
-        const minsLeft = 9 - mins;
+        const minsLeft = 49 - mins;
         const secsLeft = 59 - secs;
         if (timerText) timerText.innerText = `${minsLeft}:${secsLeft.toString().padStart(2, '0')}`;
     } else {
