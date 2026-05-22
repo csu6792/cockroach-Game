@@ -124,7 +124,7 @@ saveDB();
 
 let isBossMode = false; // 標記當前是否為 BOSS 挑戰模式
 
-function checkBossEvent() {
+/*function checkBossEvent() {
     const now = new Date();
     const mins = now.getMinutes();
     const secs = now.getSeconds();
@@ -139,7 +139,7 @@ function checkBossEvent() {
     } else {
         if (banner) banner.classList.add('hidden');
     }
-}
+}*/
 // 啟動每秒檢查
 //setInterval(checkBossEvent, 1000);
 //window.addEventListener('DOMContentLoaded', checkBossEvent);
