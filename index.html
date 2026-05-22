@@ -764,8 +764,8 @@
         </div>
     </div>
 
-	<div id="boss-event-banner" class="fixed bottom-28 right-4 z-[80] pointer-events-none animate-bounce">
-    <button onclick="startBossMode()" class="pointer-events-auto flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-br from-red-600 via-red-700 to-black rounded-full border-2 border-yellow-400 shadow-[0_0_15px_rgba(220,38,38,0.7)] hover:scale-110 active:scale-95 transition relative group">
+	<div id="boss-event-banner" class="fixed top-4 left-4 z-[9999] pointer-events-none animate-bounce">
+    <button onclick="startBossMode()" class="pointer-events-auto flex flex-col items-center justify-center w-20 h-20 bg-gradient-to-br from-red-600 via-red-700 to-black rounded-full border-2 border-yellow-400 shadow-[0_0_15px_rgba(220,38,38,0.7)] hover:scale-110 active:scale-95 transition relative group" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
         <i class="fa-solid fa-skull-crossbones text-2xl text-yellow-400 animate-pulse"></i>
         <span class="text-[10px] font-black text-white tracking-tighter mt-0.5">BOSS 戰</span>
         
@@ -773,7 +773,7 @@
             <span id="boss-timer">10:00</span>
         </div>
         
-        <div class="absolute right-24 bg-zinc-900/90 text-white text-xs px-2 py-1 rounded-md border border-zinc-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition pointer-events-none">
+        <div class="absolute left-24 bg-zinc-900/90 text-white text-xs px-2 py-1 rounded-md border border-zinc-700 whitespace-nowrap opacity-0 group-hover:opacity-100 transition pointer-events-none">
             🔥 限時 10 分鐘！點擊立刻開戰！
         </div>
     </button>
