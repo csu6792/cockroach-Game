@@ -132,15 +132,20 @@ let bossMoveInterval;
 let bossAttackInterval;
 
 // 1. 每秒檢查時間：決定左上角按鈕是否出現
+// 1. 每秒檢查時間：決定左上角按鈕是否出現
 function checkBossEvent() {
     const now = new Date();
     const mins = now.getMinutes();
     const banner = document.getElementById('boss-event-banner');
     const timerText = document.getElementById('boss-timer');
 
-    // 測試期間可以用 if (true) 強制讓按鈕一直出現
-    // 正式營運請用：if (mins >= 0 && mins < 10)
-    if (mins >= 0 && mins < 30) { 
+    // 🌟 終極判斷法：檢查大廳畫面是否顯示中
+    const lobbyScreen = document.getElementById('lobby-screen');
+    // 如果 lobbyScreen 存在，且「沒有」hidden 屬性，代表玩家現在正待在大廳
+    const isInLobby = lobbyScreen && !lobbyScreen.classList.contains('hidden');
+
+    // 條件：在 0~9 分鐘內，【而且玩家必須在大廳】，才顯示按鈕
+    if (mins >= 0 && mins < 30 && isInLobby) { 
         if (banner) banner.classList.remove('hidden');
         const minsLeft = 29 - mins;
         const secsLeft = 59 - now.getSeconds();
@@ -148,6 +153,7 @@ function checkBossEvent() {
             timerText.innerText = `${minsLeft}:${secsLeft.toString().padStart(2, '0')}`;
         }
     } else {
+        // 其他所有情況（時間沒到，或是玩家在 PVP/挑戰/生態箱/遊戲中），一律隱藏按鈕！
         if (banner) banner.classList.add('hidden');
     }
 }
