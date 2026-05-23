@@ -522,8 +522,9 @@ function spawnBossCockroach() {
 		
 		// 打開統一商城
 		function openUnifiedShop() {
-			switchBGM(shopBgm); // 🌟 切換成商城音樂
+			
 			closeModals(); // 關閉其他彈窗
+			switchBGM(shopBgm); // 🌟 切換成商城音樂
 			document.getElementById('unified-shop-modal').classList.remove('hidden');
 			updateShopCoinsDisplay(); // 更新金幣顯示
 			
