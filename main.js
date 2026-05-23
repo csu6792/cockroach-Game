@@ -21,7 +21,7 @@
         // ==========================================
         const WEAPON_CONFIG = {
             slipper: { name: '藍色拖鞋', icon: 'fa-shoe-prints', color: 'text-blue-400', glow: 'rgba(59,130,246,0.8)', baseDmg: 1, baseRadius: 35, baseCd: 0, cdReduction: 0, baseCost: 0, upgradeBase: 10 },
-            grandma_slipper: { name: '阿嬤紅拖', icon: 'fa-shoe-prints', color: 'text-red-500', glow: 'rgba(239,68,68,0.8)', baseDmg: 2, baseRadius: 60, baseCd: 1.0, cdReduction: 0.05, baseCost: 50, upgradeBase: 25 },
+            grandma_slipper: { name: '阿嬤紅拖', icon: 'fa-shoe-prints', color: 'text-red-500', glow: 'rgba(239,68,68,0.8)', baseDmg: 2, baseRadius: 60, baseCd: 0.8, cdReduction: 0.05, baseCost: 50, upgradeBase: 25 },
             newspaper: { name: '橫掃報紙', icon: 'fa-newspaper', color: 'text-gray-300', glow: 'rgba(229,231,235,0.8)', baseDmg: 1, baseRadius: 45, baseCd: 0.8, cdReduction: 0.04, baseCost: 120, upgradeBase: 40 },
             pesticide_bomb: { name: '化學毒霧', icon: 'fa-spray-can', color: 'text-emerald-400', glow: 'rgba(16,185,129,0.8)', baseDmg: 5, baseRadius: 110, baseCd: 4.0, cdReduction: 0.2, baseCost: 250, upgradeBase: 60 },
             golden_slipper: { name: '至尊黃金拖鞋', icon: 'fa-shoe-prints', color: 'text-yellow-400', glow: 'rgba(251,191,36,0.9)', baseDmg: 8, baseRadius: 50, baseCd: 0.1, cdReduction: 0.02, baseCost: 3000, upgradeBase: 150 }
