@@ -446,6 +446,7 @@ function spawnBossCockroach() {
 		
 		// 打開統一商城
 		function openUnifiedShop() {
+			switchBGM(shopBgm); // 🌟 切換成商城音樂
 			closeModals(); // 關閉其他彈窗
 			document.getElementById('unified-shop-modal').classList.remove('hidden');
 			updateShopCoinsDisplay(); // 更新金幣顯示
@@ -814,7 +815,7 @@ function spawnBossCockroach() {
             const hours = Math.floor(gameState.time / 60); const mins = Math.floor(gameState.time % 60);
             const timeStr = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
             document.getElementById('lobby-time-display').innerHTML = gameState.isNight ? `<i class="fa-solid fa-moon mr-1 text-purple-400"></i>${timeStr}` : `<i class="fa-regular fa-sun mr-1 text-yellow-400"></i>${timeStr}`;
-
+            switchBGM(bgm); // 🌟 切換回普通背景音樂
             clearEntities(); updateLobbyUI(); saveDB();
         }
 
@@ -2255,38 +2256,55 @@ function spawnBossCockroach() {
         }
 
         // ==========================================
-        // 🎵 MP3 背景音樂系統 (取代原本的電子合成器)
+        // 🎵 MP3 背景音樂系統 (支援商城多軌道切換)
         // ==========================================
         
-        // 1. 建立音樂物件 (請確保你的音樂檔名叫 bgm.mp3，並放在同一個資料夾)
+        // 1. 宣告兩首不同的音樂
         const bgm = new Audio('bgm.mp3'); 
-        bgm.loop = true;  // 設定無限循環
-        bgm.volume = 0.5; // 音量大小 (0.0 ~ 1.0)
+        bgm.loop = true;  
+        bgm.volume = 0.5; 
 
-        // 2. 簡化版的狀態追蹤
+        const shopBgm = new Audio('shop_bgm.mp3'); // 🌟 新增商城音樂
+        shopBgm.loop = true;
+        shopBgm.volume = 0.4; // 通常商城音樂可以調稍微小聲、和諧一點
+
+        // 2. 智慧狀態追蹤
         let bgmState = {
-            muted: true // 預設為靜音 (配合你原本的設定)
+            muted: true,
+            currentAudio: bgm // 🌟 核心：紀錄「目前」應該播哪一首，預設是普通BGM
         };
 
-        // 3. 切換音樂開關與 UI 按鈕的函數
+        // 3. 核心魔法：專門用來切換音樂軌道的函數
+        function switchBGM(targetAudio) {
+            // 先讓目前的音樂暫停，並重設時間回到開頭
+            bgmState.currentAudio.pause();
+            bgmState.currentAudio.currentTime = 0;
+            
+            // 指向新的音樂軌道
+            bgmState.currentAudio = targetAudio;
+            
+            // 如果玩家「沒有靜音」，就立刻播放新音樂
+            if (!bgmState.muted) {
+                bgmState.currentAudio.play().catch(e => console.log("切換音樂被瀏覽器攔截"));
+            }
+        }
+
+        // 4. 切換音樂開關與 UI 按鈕的函數 (已升級支援多軌道)
         function toggleMusic() {
-            // 切換靜音狀態
             bgmState.muted = !bgmState.muted;
             
-            // 根據狀態控制 MP3 播放或暫停
             if (bgmState.muted) {
-                bgm.pause(); // 靜音時暫停播放
+                // 靜音時，保險起見把兩首全部都暫停
+                bgm.pause();
+                shopBgm.pause();
             } else {
-                // 播放並捕捉可能因為瀏覽器自動播放限制而產生的錯誤
-                bgm.play().catch(e => console.log("等待玩家互動後才能播放 BGM"));
+                // 解除靜音時，只播放「目前指定」的那首音樂
+                bgmState.currentAudio.play().catch(e => console.log("等待玩家互動後才能播放 BGM"));
             }
 
-            // ==========================================
-            // 下方完全保留你原本用來切換「大廳」與「遊戲」中喇叭圖示的邏輯
-            // ==========================================
+            // (下方完全保留你原本切換大廳與遊戲中喇叭圖示的 UI 邏輯...)
             const lobbyBtn = document.getElementById('lobby-music-btn');
             const gameBtn = document.getElementById('game-music-btn');
-            
             if (bgmState.muted) {
                 if (lobbyBtn) {
                     lobbyBtn.className = "text-zinc-500 hover:text-zinc-400 p-1 bg-zinc-800/80 rounded-full border border-zinc-700/50 flex items-center justify-center w-6 h-6 z-20 pointer-events-auto";
