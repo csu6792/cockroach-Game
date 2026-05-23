@@ -72,8 +72,16 @@
             purple_demon: { name: '暗魔紫 (紫焰)', cost: 2000, desc: '幽暗深邃的魔神紫色火焰特效', type: 'fire', class: 'border-purple-demon' },
             // 彩虹炫彩火焰 (2種，最低10000)
             rainbow_nebula: { name: '星雲虹光 (炫彩)', cost: 10000, desc: '尊貴彩虹炫光火焰！頂級玩家的奢華首選', type: 'rainbow', class: 'border-rainbow-nebula' },
-            aurora_cosmic: { name: '宇宙極光 (極光霓彩)', cost: 15000, desc: '極光般的緩慢極速霓虹漸變，唯美至極', type: 'rainbow', class: 'border-aurora-cosmic' }
-        };
+            aurora_cosmic: { name: '宇宙極光 (極光霓彩)', cost: 15000, desc: '極光般的緩慢極速霓虹漸變，唯美至極', type: 'rainbow', class: 'border-aurora-cosmic' },
+            gacha_mythic_border: { 
+                name: '虛空混沌·流光邊框', 
+                cost: 0, 
+                desc: '扭蛋機專屬神話大獎！', 
+                type: 'mythic', 
+                class: 'border-4 border-transparent bg-gradient-to-r from-purple-600 via-pink-500 via-red-500 to-yellow-500 bg-[length:400%_400%] shadow-[0_0_35px_rgba(236,72,153,0.8)]',
+                source: 'gacha' // 標記來源為扭蛋，防呆與 UI 顯示用
+            }
+		};
 
         // ==========================================
 // 🎰 扭蛋專屬：超華麗動態特效大獎定義
@@ -1062,7 +1070,11 @@ function spawnBossCockroach() {
 			}
 
             Object.keys(BORDER_CONFIG).forEach(key => {
+				
                 const conf = BORDER_CONFIG[key];
+				if (conf.source === 'gacha' || key === 'none') {
+                return; // 在 forEach 裡面寫 return，等同於直接跳過這一個，繼續換下一個商品
+                }
                 const isUnlocked = db.unlocked_borders.includes(key);
                 const isEquipped = db.equipped_border === key;
 
@@ -1283,6 +1295,80 @@ function equipTitle(titleName) {
             renderTitleSelect();
             if (typeof updateLobbyUI === 'function') updateLobbyUI(); // 同步重整大廳UI上顯示的頭頂稱號
         }
+    }
+}
+
+// =========================================
+// 🖼️ 邊框選擇與配戴系統
+// =========================================
+
+function renderBorderSelect() {
+    const list = document.getElementById('unlocked-borders-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    // 防呆：確保存檔裡有預設值
+    if (!db.unlocked_borders) db.unlocked_borders = ['none'];
+    if (!db.equipped_border) db.equipped_border = 'none';
+
+    // 🌟 因為 BORDER_CONFIG 是 Object，我們用 Object.keys() 來取得所有 ID 進行迴圈
+    Object.keys(BORDER_CONFIG).forEach(id => {
+        const border = BORDER_CONFIG[id];
+        
+        // 1. 檢查是否解鎖 (預設 none 永遠解鎖，或者是陣列內有包含)
+        const isOwned = id === 'none' || db.unlocked_borders.includes(id);
+        const isEquipped = db.equipped_border === id;
+
+        // 2. 準備右側的按鈕或鎖定狀態 HTML
+        let actionHtml = '';
+        if (isEquipped) {
+            actionHtml = `<span class="bg-emerald-600/30 text-emerald-400 font-bold px-2.5 py-1 rounded-lg text-xs border border-emerald-500/30 flex items-center gap-1"><i class="fa-solid fa-circle-check"></i>使用中</span>`;
+        } else if (isOwned) {
+            actionHtml = `<button onclick="equipBorder('${id}')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-2.5 py-1 rounded-lg border border-zinc-600 text-xs transition-colors">配戴邊框</button>`;
+        } else {
+            // 未解鎖狀態，根據來源顯示不同鎖定圖示
+            if (border.source === 'gacha') {
+                actionHtml = `<span class="text-purple-400/50 font-bold text-xs flex items-center gap-1 bg-purple-950/20 border border-purple-900/30 px-2 py-1 rounded-lg"><i class="fa-solid fa-lock text-[10px]"></i> 扭蛋限定</span>`;
+            } else {
+                actionHtml = `<span class="text-zinc-500 font-bold text-xs flex items-center gap-1"><i class="fa-solid fa-lock text-[10px]"></i> 商城購買</span>`;
+            }
+        }
+
+        // 3. 準備名稱下方的小提示 (提示價格或扭蛋限定)
+        let hintHtml = '';
+        if (border.source === 'gacha' && isOwned) {
+            hintHtml = '<span class="text-[9px] text-purple-400 font-black mt-0.5 animate-pulse">🌌 扭蛋至尊神話</span>';
+        } else if (!isOwned && border.cost > 0) {
+            hintHtml = `<span class="text-[9px] text-zinc-500 mt-0.5"><i class="fa-solid fa-coins text-yellow-500"></i> ${border.cost} 金幣解鎖</span>`;
+        }
+
+        // 4. 將每一個邊框選項加入清單中
+        list.innerHTML += `
+            <div class="bg-zinc-800/60 rounded-xl p-3 border ${isEquipped ? 'border-emerald-500/30 bg-emerald-950/10' : (isOwned ? 'border-zinc-700/60' : 'border-zinc-800/40')} flex items-center justify-between gap-3 transition-all">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-zinc-900 flex items-center justify-center ${border.class}">
+                        <i class="fa-solid fa-user text-zinc-600"></i>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-zinc-200">${border.name}</span>
+                        ${hintHtml}
+                    </div>
+                </div>
+                <div>${actionHtml}</div>
+            </div>
+        `;
+    });
+}
+
+function equipBorder(borderId) {
+    if (db.unlocked_borders.includes(borderId) || borderId === 'none') {
+        db.equipped_border = borderId;
+        saveDB();
+        
+        if (typeof playSound !== 'undefined' && playSound.success) playSound.success();
+        
+        renderBorderSelect();
+        if (typeof updateLobbyUI === 'function') updateLobbyUI(); 
     }
 }
 
