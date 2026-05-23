@@ -145,9 +145,9 @@ function checkBossEvent() {
     const isInLobby = lobbyScreen && !lobbyScreen.classList.contains('hidden');
 
     // 條件：在 0~9 分鐘內，【而且玩家必須在大廳】，才顯示按鈕
-    if (mins >= 0 && mins < 30 && isInLobby) { 
+    if (mins >= 0 && mins < 20 && isInLobby) { 
         if (banner) banner.classList.remove('hidden');
-        const minsLeft = 29 - mins;
+        const minsLeft = 19 - mins;
         const secsLeft = 59 - now.getSeconds();
         if (timerText) {
             timerText.innerText = `${minsLeft}:${secsLeft.toString().padStart(2, '0')}`;
@@ -289,7 +289,7 @@ function spawnBossCockroach() {
         if (bossHp <= 0) {
             clearInterval(bossMoveInterval);
             clearInterval(bossAttackInterval);
-            alert("🎉 恭喜成功擊殺變異大蟑螂王！守護了食物！\n獲得 100 金幣！");
+            alert("成功擊殺變異大蟑螂王！\n獲得 100 金幣！");
             
             // 獎勵發放
             db.coins += 100;
