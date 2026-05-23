@@ -196,7 +196,7 @@ function playGacha() {
     if (!db.unlocked_borders) db.unlocked_borders = ['none'];
     if (!db.unlocked_shop_titles) db.unlocked_shop_titles = [];
 
-    if (roll < 0.01) { 
+    if (roll < 0.5) { 
         // 🏆 1% 機率：神話邊框
         prizeType = "mythic_border";
         // 🌟 修正2：改成比對 unlocked_borders
@@ -208,7 +208,7 @@ function playGacha() {
             prizeType = "duplicate";
             prizeName = `【重複補償】5,000 金幣`;
         }
-    } else if (roll < 0.02) { 
+    } else if (roll <1.0) { 
         // 🏆 1% 機率：神話稱號
         prizeType = "mythic_title";
         // 🌟 修正3：改成比對 unlocked_shop_titles
