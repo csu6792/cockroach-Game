@@ -154,7 +154,7 @@ function checkBossEvent() {
 setInterval(checkBossEvent, 1000);
 window.addEventListener('DOMContentLoaded', checkBossEvent);
 
-// 2. 玩家點擊按鈕：啟動 BOSS 戰
+// 2. 玩家點擊按鈕：啟動 BOSS 戰 (獨立關卡版)
 function startBossMode() {
     isBossMode = true;
     
@@ -164,15 +164,34 @@ function startBossMode() {
     const lobbyScreen = document.getElementById('lobby-screen');
     if (lobbyScreen) lobbyScreen.classList.add('hidden');
     
-    // 進入原本的遊戲舞台容器，打開主畫面與上下工具列
-    document.getElementById('game-container').classList.remove('hidden');
+    // 顯示遊戲容器與上下工具列
+    const gameContainer = document.getElementById('game-container');
+    if (gameContainer) gameContainer.classList.remove('hidden');
     document.getElementById('top-bar').classList.remove('hidden');
     document.getElementById('bottom-bar').classList.remove('hidden');
     
-    // 🔥 核心機制：提升目標(蛋糕)血量 1.5 倍
-    // 基礎是 100，提升為 150
+    // ==========================================
+    // 🌟 獨立關卡核心：手動佈置戰場與蛋糕！
+    // ==========================================
+    const gameScreen = document.getElementById('game-screen') || gameContainer;
+    
+    // 1. (可選) 幫這個獨立關卡加一個較暗的紅色背景，增加魔王戰氣氛
+    gameScreen.style.backgroundColor = '#2a1215'; 
+
+    // 2. 憑空創造一塊「BOSS戰專用蛋糕」放在正中央
+    let bossCake = document.getElementById('boss-cake-element');
+    if (!bossCake) {
+        bossCake = document.createElement('div');
+        bossCake.id = 'boss-cake-element';
+        // 用 Tailwind 讓蛋糕絕對置中，並加上一點發光特效
+        bossCake.className = 'absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30 text-8xl md:text-[120px] select-none pointer-events-none drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]';
+        bossCake.innerHTML = '🍰'; // 如果你有蛋糕的圖片，也可以改成 <img src="cake.png">
+        gameScreen.appendChild(bossCake);
+    }
+    
+    // 🔥 提升目標(蛋糕)血量 1.5 倍
     gameState.targetHp = 150; 
-    updateTargetHpUI(); // 同步刷新你原本左上角的綠色血條
+    updateTargetHpUI(); 
 
     // 觸發紅色 WARNING 警告特效
     const warning = document.getElementById('boss-warning-overlay');
@@ -195,7 +214,6 @@ function startBossMode() {
     // 正式生成大蟑螂！
     spawnBossCockroach();
 }
-
 // 3. 更新 BOSS 頂部紅色大血條顯示
 function updateBossHpBar() {
     const hpBar = document.getElementById('boss-hp-bar');
@@ -274,6 +292,8 @@ function spawnBossCockroach() {
             
             // 清理戰場並回到大廳
             boss.remove();
+			const cake = document.getElementById('boss-cake-element');
+            if (cake) cake.remove();
             isBossMode = false;
             document.getElementById('boss-ui-container').classList.add('hidden');
             backToLobby(); 
@@ -328,7 +348,9 @@ function spawnBossCockroach() {
             clearInterval(bossAttackInterval);
             isBossMode = false;
             boss.remove();
-            
+            const cake = document.getElementById('boss-cake-element');
+            if (cake) cake.remove();
+			
             document.getElementById('boss-ui-container').classList.add('hidden');
             
             // 呼叫你原本第 570 行寫的 endGame 函數，完美產出結算與 Game Over 畫面
