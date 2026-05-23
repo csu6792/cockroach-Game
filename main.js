@@ -152,49 +152,153 @@ function playGacha() {
 
     // 2. 扣除 1000 金幣
     db.coins -= 1000;
+    saveDB();
+    if (typeof updateLobbyUI === 'function') updateLobbyUI();
 
-    // 3. 隨機滾輪 (0.00 ~ 1.00)
+    // 3. 取得所有 UI 控制元素
+    const playBtn = document.getElementById('gacha-play-btn');
+    const closeBtn = document.getElementById('gacha-close-btn');
+    const previewState = document.getElementById('gacha-preview-state');
+    const shakingState = document.getElementById('gacha-shaking-state');
+    const rewardState = document.getElementById('gacha-reward-state');
+    const rewardBox = document.getElementById('reward-display-box');
+    const rewardRarity = document.getElementById('reward-rarity');
+    const glowBg = document.getElementById('reward-glow-bg');
+
+    // 4. 鎖定按鈕避免重複點擊，並隱藏原本的預覽與舊獎勵
+    playBtn.disabled = true;
+    closeBtn.disabled = true;
+    playBtn.innerText = "⚡ 正在扭蛋中...";
+    previewState.classList.add('hidden');
+    rewardState.classList.add('hidden');
+    rewardState.classList.add('scale-0'); // 重設開獎縮放動畫
+
+    // 5. 進入狀態 2：顯示大扭蛋瘋狂搖晃動畫
+    shakingState.classList.remove('hidden');
+
+    // 🎵 播放遊戲內建碰撞或打怪等震撼音效 (增強抽獎爽感)
+    if (typeof playSound !== 'undefined' && playSound.thud) {
+        playSound.thud();
+        setTimeout(() => playSound.thud(), 300);
+        setTimeout(() => playSound.thud(), 600);
+    }
+
+    // 6. 核心機率計算（先在背景算好結果）
     const roll = Math.random();
-    let resultMessage = "";
+    let prizeType = "normal"; // normal, border, title
+    let prizeName = "";
+    let prizeHtml = "";
 
-    // 確定 db 內建有陣列，防止報錯
     if (!db.ownedBorders) db.ownedBorders = ['default'];
     if (!db.ownedTitles) db.ownedTitles = ['none'];
 
-    // 4. 機率判定
     if (roll < 0.01) { 
-        // 🏆 0% ~ 1%：抽中神話邊框 (1% 機率)
+        // 🏆 1% 機率：神話邊框
+        prizeType = "mythic_border";
         if (!db.ownedBorders.includes(GACHA_PRIZES.border.id)) {
             db.ownedBorders.push(GACHA_PRIZES.border.id);
-            resultMessage = `🎉【神話降臨】🎉\n恭喜抽中特製邊框：\n✨${GACHA_PRIZES.border.name}✨\n(已解鎖，可至自選清單裝備！)` ;
+            prizeName = GACHA_PRIZES.border.name;
         } else {
-            db.coins += 5000; // 重複補償
-            resultMessage = `✨ 抽中了【神話邊框】，但你已經有了！自動轉化為 5000 金幣補償！`;
+            db.coins += 5000;
+            prizeType = "duplicate";
+            prizeName = `【重複補償】5,000 金幣`;
         }
-
     } else if (roll < 0.02) { 
-        // 🏆 1% ~ 2%：抽中神話稱號 (1% 機率)
+        // 🏆 1% 機率：神話稱號
+        prizeType = "mythic_title";
         if (!db.ownedTitles.includes(GACHA_PRIZES.title.id)) {
             db.ownedTitles.push(GACHA_PRIZES.title.id);
-            resultMessage = `👑【天命覺醒】👑\n恭喜抽中超越至尊的專屬稱號：\n✨${GACHA_PRIZES.title.name}✨\n(已解鎖，可至自選清單裝備！)` ;
+            prizeName = GACHA_PRIZES.title.name;
         } else {
-            db.coins += 5000; // 重複補償
-            resultMessage = `✨ 抽中了【神話稱號】，但你已經有了！自動轉化為 5000 金幣補償！`;
+            db.coins += 5000;
+            prizeType = "duplicate";
+            prizeName = `【重複補償】5,000 金幣`;
         }
-
     } else { 
-        // 💩 2% ~ 100%：安慰獎 (98% 機率)
+        // 💩 安慰獎
+        prizeType = "normal";
         db.exp += 100;
-        resultMessage = `💨 噗...扭蛋機吐出一陣白煙。\n獲得安慰獎：100 經驗值！`;
+        prizeName = "經驗值 + 100";
         if (typeof checkLevelUp === 'function') checkLevelUp();
     }
 
-    // 5. 存檔並刷新大廳 UI
     saveDB();
-    if (typeof updateLobbyUI === 'function') updateLobbyUI();
-    
-    // 6. 跳出抽獎結果
-    alert(resultMessage);
+
+    // ==========================================
+    // ⏳ 經典排程控制：搖晃 1.5 秒後，華麗爆炸開獎
+    // ==========================================
+    setTimeout(() => {
+        // 隱藏搖晃狀態
+        shakingState.classList.add('hidden');
+
+        // 根據獎項類型，組裝最華麗的展示卡片 HTML
+        if (prizeType === "mythic_border") {
+            rewardRarity.innerText = "🌌【神話降臨 · 限定外框】🌌";
+            rewardRarity.className = "text-sm font-black tracking-widest text-pink-400 animate-pulse";
+            glowBg.className = "absolute inset-0 bg-pink-500/40 blur-3xl rounded-full animate-ping";
+            prizeHtml = `
+                <div class="w-56 bg-black border-4 border-transparent bg-gradient-to-r from-purple-600 via-pink-500 via-red-500 to-yellow-500 bg-[length:400%_400%] shadow-[0_0_35px_rgba(236,72,153,0.8)] p-4 rounded-2xl flex flex-col items-center justify-center animate-bounce">
+                    <span class="text-white font-black text-sm text-center">${prizeName}</span>
+                    <span class="text-[10px] text-zinc-400 mt-2">已解鎖！可至商城或自選區裝備</span>
+                </div>
+            `;
+        } else if (prizeType === "mythic_title") {
+            rewardRarity.innerText = "👑【天命覺醒 · 神話稱號】👑";
+            rewardRarity.className = "text-sm font-black tracking-widest text-yellow-400 animate-pulse";
+            glowBg.className = "absolute inset-0 bg-yellow-500/40 blur-3xl rounded-full animate-ping";
+            prizeHtml = `
+                <div class="w-56 bg-zinc-900 border border-yellow-500 p-4 rounded-2xl flex flex-col items-center justify-center shadow-[0_0_25px_rgba(234,179,8,0.5)]">
+                    <div class="${GACHA_PRIZES.title.className} text-sm text-center">${prizeName}</div>
+                    <span class="text-[10px] text-zinc-400 mt-2">已解鎖！可至大廳編輯裝備</span>
+                </div>
+            `;
+        } else if (prizeType === "duplicate") {
+            rewardRarity.innerText = "✨【命運交織 · 金幣轉化】✨";
+            rewardRarity.className = "text-xs font-black tracking-widest text-cyan-400";
+            glowBg.className = "absolute inset-0 bg-cyan-500/20 blur-xl rounded-full";
+            prizeHtml = `
+                <div class="bg-zinc-900 border border-cyan-800 p-4 rounded-xl text-center">
+                    <span class="text-xl">💰</span>
+                    <div class="text-cyan-400 font-extrabold text-sm mt-1">${prizeName}</div>
+                    <p class="text-[10px] text-zinc-500 mt-1">重複抽中神話大獎自動退還金幣</p>
+                </div>
+            `;
+        } else {
+            // 普通獎
+            rewardRarity.innerText = "💨【銘謝惠顧 · 下次好運】💨";
+            rewardRarity.className = "text-xs font-black tracking-widest text-zinc-500";
+            glowBg.className = "absolute inset-0 bg-zinc-500/10 blur-md rounded-full";
+            prizeHtml = `
+                <div class="bg-zinc-900 border border-zinc-800 py-3 px-6 rounded-xl text-center">
+                    <span class="text-2xl">🍃</span>
+                    <div class="text-zinc-300 font-bold text-xs mt-1">${prizeName}</div>
+                </div>
+            `;
+        }
+
+        // 🎵 播放開獎爆發音效
+        if (typeof playSound !== 'undefined' && playSound.splat) {
+            playSound.splat();
+        }
+
+        // 7. 將內容塞入並播放 Scale 動畫切換成狀態 3
+        rewardBox.innerHTML = prizeHtml;
+        rewardState.classList.remove('hidden');
+        setTimeout(() => {
+            rewardState.classList.remove('scale-0');
+            rewardState.classList.add('scale-100');
+        }, 50);
+
+        // 8. 恢復按鈕狀態，允許繼續抽或離開
+        playBtn.disabled = false;
+        closeBtn.disabled = false;
+        playBtn.innerText = "🚀 再次啟動 (1000金幣)";
+        
+        // 更新大廳與商城所有的金幣及UI顯示
+        if (typeof updateLobbyUI === 'function') updateLobbyUI();
+        if (typeof updateShopCoinsDisplay === 'function') updateShopCoinsDisplay();
+
+    }, 1500); // ⏱️ 1.5 秒的劇烈搖晃時間
 }
 
 
