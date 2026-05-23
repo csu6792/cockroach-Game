@@ -192,14 +192,16 @@ function playGacha() {
     let prizeName = "";
     let prizeHtml = "";
 
-    if (!db.ownedBorders) db.ownedBorders = ['default'];
-    if (!db.ownedTitles) db.ownedTitles = ['none'];
+    // 🌟 修正1：使用你系統原生的存檔變數，並給予正確的預設值
+    if (!db.unlocked_borders) db.unlocked_borders = ['none'];
+    if (!db.unlocked_shop_titles) db.unlocked_shop_titles = [];
 
     if (roll < 0.01) { 
         // 🏆 1% 機率：神話邊框
         prizeType = "mythic_border";
-        if (!db.ownedBorders.includes(GACHA_PRIZES.border.id)) {
-            db.ownedBorders.push(GACHA_PRIZES.border.id);
+        // 🌟 修正2：改成比對 unlocked_borders
+        if (!db.unlocked_borders.includes(GACHA_PRIZES.border.id)) {
+            db.unlocked_borders.push(GACHA_PRIZES.border.id);
             prizeName = GACHA_PRIZES.border.name;
         } else {
             db.coins += 5000;
@@ -209,8 +211,9 @@ function playGacha() {
     } else if (roll < 0.02) { 
         // 🏆 1% 機率：神話稱號
         prizeType = "mythic_title";
-        if (!db.ownedTitles.includes(GACHA_PRIZES.title.id)) {
-            db.ownedTitles.push(GACHA_PRIZES.title.id);
+        // 🌟 修正3：改成比對 unlocked_shop_titles
+        if (!db.unlocked_shop_titles.includes(GACHA_PRIZES.title.id)) {
+            db.unlocked_shop_titles.push(GACHA_PRIZES.title.id);
             prizeName = GACHA_PRIZES.title.name;
         } else {
             db.coins += 5000;
@@ -225,7 +228,7 @@ function playGacha() {
         if (typeof checkLevelUp === 'function') checkLevelUp();
     }
 
-    saveDB();
+    saveDB(); 
 
     // ==========================================
     // ⏳ 經典排程控制：搖晃 1.5 秒後，華麗爆炸開獎
@@ -1153,7 +1156,7 @@ function spawnBossCockroach() {
 
     TITLE_CONFIG.forEach(title => {
         // 🌟 1. 檢查是否透過扭蛋或商城獲得 (比對陣列內的 id 或稱號字串)
-        const isOwned = db.ownedTitles && (db.ownedTitles.includes(title.id) || db.ownedTitles.includes(title.name));
+        const isOwned = db.unlocked_shop_titles && (db.unlocked_shop_titles.includes(title.id) || db.unlocked_shop_titles.includes(title.name));
         
         // 🌟 2. 檢查是否達到普通等級解鎖 (999級的特殊稱號會在這裡回傳 false)
         const isLevelUnlocked = title.level <= 100 && db.level >= title.level;
@@ -1208,7 +1211,7 @@ function equipTitle(titleName) {
     const conf = TITLE_CONFIG.find(t => t.name === titleName);
     if (conf) {
         // 🌟 配戴時同步做雙重檢查
-        const isOwned = db.ownedTitles && (db.ownedTitles.includes(conf.id) || db.ownedTitles.includes(conf.name));
+        const isOwned = db.unlocked_shop_titles && (db.unlocked_shop_titles.includes(conf.id) || db.unlocked_shop_titles.includes(conf.name));
         const isLevelUnlocked = conf.level <= 100 && db.level >= conf.level;
 
         if (isLevelUnlocked || isOwned) {
