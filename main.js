@@ -71,6 +71,24 @@
             rainbow_nebula: { name: '星雲虹光 (炫彩)', cost: 10000, desc: '尊貴彩虹炫光火焰！頂級玩家的奢華首選', type: 'rainbow', class: 'border-rainbow-nebula' },
             aurora_cosmic: { name: '宇宙極光 (極光霓彩)', cost: 15000, desc: '極光般的緩慢極速霓虹漸變，唯美至極', type: 'rainbow', class: 'border-aurora-cosmic' }
         };
+
+        // ==========================================
+// 🎰 扭蛋專屬：超華麗動態特效大獎定義
+// ==========================================
+const GACHA_PRIZES = {
+    border: {
+        id: 'gacha_mythic_border',
+        name: '🌌 虛空混沌·流光邊框',
+        // 核心：注入一整串瘋狂的 Tailwind 動態特效組合（流光漸層 + 霓虹外發光）
+        className: 'border-4 border-transparent bg-gradient-to-r from-purple-600 via-pink-500 via-red-500 to-yellow-500 bg-[length:400%_400%] shadow-[0_0_35px_rgba(236,72,153,0.8)]'
+    },
+    title: {
+        id: 'gacha_mythic_title',
+        name: '👑 🛑 弒神之皇 🛑 👑',
+        // 核心：文字漸層流光 + 閃爍動畫 + 超強文字陰影
+        className: 'font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-500 via-red-500 to-purple-600 bg-[length:200%_auto] tracking-widest drop-shadow-[0_2px_10px_rgba(245,158,11,0.9)]'
+    }
+};
 		
 		// 新增商城稱號配置
 		const TITLE_SHOP_CONFIG = {
@@ -121,6 +139,64 @@ saveDB();
         };
 
         // ... 貼在 let gameState = { ... }; 的正下方 ...
+
+// ==========================================
+// 🎰 扭蛋抽獎核心邏輯
+// ==========================================
+function playGacha() {
+    // 1. 檢查金幣是否足夠
+    if (db.coins < 1000) {
+        alert("❌ 金幣不足 1000！大魔王在笑你窮，快去刷怪！");
+        return;
+    }
+
+    // 2. 扣除 1000 金幣
+    db.coins -= 1000;
+
+    // 3. 隨機滾輪 (0.00 ~ 1.00)
+    const roll = Math.random();
+    let resultMessage = "";
+
+    // 確定 db 內建有陣列，防止報錯
+    if (!db.ownedBorders) db.ownedBorders = ['default'];
+    if (!db.ownedTitles) db.ownedTitles = ['none'];
+
+    // 4. 機率判定
+    if (roll < 0.01) { 
+        // 🏆 0% ~ 1%：抽中神話邊框 (1% 機率)
+        if (!db.ownedBorders.includes(GACHA_PRIZES.border.id)) {
+            db.ownedBorders.push(GACHA_PRIZES.border.id);
+            resultMessage = `🎉【神話降臨】🎉\n恭喜抽中全服唯一特製邊框：\n✨${GACHA_PRIZES.border.name}✨\n(已解鎖，可至自選清單裝備！)` ;
+        } else {
+            db.coins += 5000; // 重複補償
+            resultMessage = `✨ 抽中了【神話邊框】，但你已經有了！自動轉化為 5000 金幣補償！`;
+        }
+
+    } else if (roll < 0.02) { 
+        // 🏆 1% ~ 2%：抽中神話稱號 (1% 機率)
+        if (!db.ownedTitles.includes(GACHA_PRIZES.title.id)) {
+            db.ownedTitles.push(GACHA_PRIZES.title.id);
+            resultMessage = `👑【天命覺醒】👑\n恭喜抽中超越至尊的專屬稱號：\n✨${GACHA_PRIZES.title.name}✨\n(已解鎖，可至自選清單裝備！)` ;
+        } else {
+            db.coins += 5000; // 重複補償
+            resultMessage = `✨ 抽中了【神話稱號】，但你已經有了！自動轉化為 5000 金幣補償！`;
+        }
+
+    } else { 
+        // 💩 2% ~ 100%：安慰獎 (98% 機率)
+        db.exp += 100;
+        resultMessage = `💨 噗...扭蛋機吐出一陣白煙。\n獲得安慰獎：100 經驗值！`;
+        if (typeof checkLevelUp === 'function') checkLevelUp();
+    }
+
+    // 5. 存檔並刷新大廳 UI
+    saveDB();
+    if (typeof updateLobbyUI === 'function') updateLobbyUI();
+    
+    // 6. 跳出抽獎結果
+    alert(resultMessage);
+}
+
 
 // ==========================================
 // BOSS 戰核心邏輯模組 (完美對接蛋糕與原本機制版)
@@ -707,47 +783,76 @@ function spawnBossCockroach() {
         // UI Navigation & Modals
         // ==========================================
         function updateLobbyUI() {
-			
-            document.getElementById('lobby-level').textContent = db.level;
-            document.getElementById('lobby-coins').textContent = db.coins;
-            document.getElementById('shop-coins-display').textContent = db.coins;
-            document.getElementById('item-shop-coins-display').textContent = db.coins;
+    document.getElementById('lobby-level').textContent = db.level;
+    document.getElementById('lobby-coins').textContent = db.coins;
+    document.getElementById('shop-coins-display').textContent = db.coins;
+    document.getElementById('item-shop-coins-display').textContent = db.coins;
+    
+    const needed = getExpNeeded(db.level);
+    document.getElementById('lobby-exp-bar').style.width = `${(db.exp/needed)*100}%`;
+    document.getElementById('lobby-exp-text').textContent = `${db.exp}/${needed}`;
+    
+    // ==========================================
+    // 🌟 稱號獲取 (整合免費、商城、神話扭蛋)
+    // ==========================================
+    // ⚠️ 注意：ID 已經改成我們剛剛在 HTML 設定的 player-title-display
+    const titleEl = document.getElementById('player-title-display'); 
+    
+    if (titleEl) {
+        // 判斷優先級：1. 扭蛋神話稱號 -> 2. 商城特效稱號 -> 3. 免費等級稱號
+        
+        // (為了相容你的變數，這裡同時檢查 db.equippedTitle 與 db.equipped_shop_title)
+        if (db.equippedTitle === GACHA_PRIZES.title.id || db.equipped_shop_title === GACHA_PRIZES.title.id) {
+            // 🏆 顯示：神話扭蛋大獎特效
+            titleEl.innerHTML = `${GACHA_PRIZES.title.name} <i class="fa-solid fa-pen-to-square text-[10px] text-zinc-400 opacity-60"></i>`;
+            titleEl.className = `text-sm font-bold drop-shadow-sm mb-1 cursor-pointer hover:scale-105 transition-all inline-flex items-center gap-1 ${GACHA_PRIZES.title.className}`;
             
-            const needed = getExpNeeded(db.level);
-            document.getElementById('lobby-exp-bar').style.width = `${(db.exp/needed)*100}%`;
-            document.getElementById('lobby-exp-text').textContent = `${db.exp}/${needed}`;
+        } else if (db.equipped_shop_title && TITLE_SHOP_CONFIG[db.equipped_shop_title]) {
+            // 🛒 顯示：商城的特效稱號
+            const shopTitle = TITLE_SHOP_CONFIG[db.equipped_shop_title];
+            titleEl.innerHTML = `${shopTitle.name} <i class="fa-solid fa-pen-to-square text-[10px] text-zinc-400 opacity-60"></i>`;
+            titleEl.className = `text-sm font-bold drop-shadow-sm mb-1 cursor-pointer hover:scale-105 transition-all inline-flex items-center gap-1 ${shopTitle.class}`;
             
-            // 稱號獲取 (新自選系統)
+        } else {
+            // 🆓 顯示：原有的免費等級稱號
             const titleInfo = getEquippedTitle();
-            const titleEl = document.getElementById('lobby-title');
-            // 檢查是否裝備了商城的特效稱號
-			if (db.equipped_shop_title && TITLE_SHOP_CONFIG[db.equipped_shop_title]) {
-				const shopTitle = TITLE_SHOP_CONFIG[db.equipped_shop_title];
-				titleEl.innerHTML = `${shopTitle.name} <i class="fa-solid fa-pen-to-square text-[10px] text-zinc-400 opacity-60"></i>`;
-				// 套用動畫 class，移除原有的 text-transparent 等漸層設定
-				titleEl.className = `text-sm font-bold drop-shadow-sm mb-1 cursor-pointer hover:scale-105 transition-all inline-flex items-center gap-1 ${shopTitle.class}`;
-			} else {
-				// 原有的免費等級稱號邏輯
-				const titleInfo = getEquippedTitle();
-				titleEl.innerHTML = `${titleInfo.name} <i class="fa-solid fa-pen-to-square text-[10px] text-zinc-400 opacity-60"></i>`;
-				titleEl.className = `text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r ${titleInfo.color} drop-shadow-sm mb-1 cursor-pointer hover:scale-105 transition-all inline-flex items-center gap-1`;
-			}
-
-            let unlockedDex = 0; Object.values(db.kills).forEach(k => { if(k>0) unlockedDex++; });
-            document.getElementById('dex-progress').textContent = `${unlockedDex}/4`;
-
-            // 更新大廳角色卡邊框 (新外框動畫效果)
-            const playerCard = document.getElementById('player-card');
-            // 移除所有動畫外框 class
-            playerCard.className = "bg-black/60 border rounded-2xl p-4 w-full mb-4 shadow-2xl backdrop-blur-sm relative transition-all duration-300";
-            
-            const currentBorder = db.equipped_border || 'none';
-            if (currentBorder !== 'none' && BORDER_CONFIG[currentBorder]) {
-                playerCard.classList.add(BORDER_CONFIG[currentBorder].class);
-            } else {
-                playerCard.classList.add('border-zinc-700');
-            }
+            titleEl.innerHTML = `${titleInfo.name} <i class="fa-solid fa-pen-to-square text-[10px] text-zinc-400 opacity-60"></i>`;
+            titleEl.className = `text-sm font-bold text-transparent bg-clip-text bg-gradient-to-r ${titleInfo.color} drop-shadow-sm mb-1 cursor-pointer hover:scale-105 transition-all inline-flex items-center gap-1`;
         }
+    }
+
+    let unlockedDex = 0; 
+    Object.values(db.kills).forEach(k => { if(k>0) unlockedDex++; });
+    document.getElementById('dex-progress').textContent = `${unlockedDex}/4`;
+
+    // ==========================================
+    // 🌟 更新大廳角色卡邊框 (整合原有與神話外框)
+    // ==========================================
+    // ⚠️ 注意：ID 已經改成我們剛剛在 HTML 設定的 player-profile-card
+    const playerCard = document.getElementById('player-profile-card'); 
+    
+    if (playerCard) {
+        // 重置為預設外框，清除所有動畫 class
+        playerCard.className = "bg-black/60 border rounded-2xl p-4 w-full mb-4 shadow-2xl backdrop-blur-sm relative transition-all duration-300";
+        
+        // 抓取目前的邊框 (相容你的變數名)
+        const currentBorder = db.equipped_border || db.equippedBorder || 'none';
+        
+        // 判斷優先級：1. 神話扭蛋邊框 -> 2. 商城邊框 -> 3. 無邊框
+        if (currentBorder === GACHA_PRIZES.border.id) {
+            // 🏆 顯示：神話扭蛋邊框特效 (直接疊加 class)
+            playerCard.className += ` ${GACHA_PRIZES.border.className}`;
+            
+        } else if (currentBorder !== 'none' && BORDER_CONFIG && BORDER_CONFIG[currentBorder]) {
+            // 🛒 顯示：商城購買的邊框
+            playerCard.classList.add(BORDER_CONFIG[currentBorder].class);
+            
+        } else {
+            // 🆓 顯示：預設無邊框
+            playerCard.classList.add('border-zinc-700');
+        }
+    }
+}
 
         function openSceneSelect(mode) {
             playSound.success(); gameState.mode = mode; document.getElementById('scene-modal').classList.remove('hidden');
