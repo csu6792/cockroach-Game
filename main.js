@@ -78,13 +78,13 @@
 const GACHA_PRIZES = {
     border: {
         id: 'gacha_mythic_border',
-        name: '🌌 虛空混沌·流光邊框',
+        name: '虛空混沌·流光邊框',
         // 核心：注入一整串瘋狂的 Tailwind 動態特效組合（流光漸層 + 霓虹外發光）
         className: 'border-4 border-transparent bg-gradient-to-r from-purple-600 via-pink-500 via-red-500 to-yellow-500 bg-[length:400%_400%] shadow-[0_0_35px_rgba(236,72,153,0.8)]'
     },
     title: {
         id: 'gacha_mythic_title',
-        name: '👑 🛑 弒神之皇 🛑 👑',
+        name: '天使降臨',
         // 核心：文字漸層流光 + 閃爍動畫 + 超強文字陰影
         className: 'font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-500 via-red-500 to-purple-600 bg-[length:200%_auto] tracking-widest drop-shadow-[0_2px_10px_rgba(245,158,11,0.9)]'
     }
@@ -166,7 +166,7 @@ function playGacha() {
         // 🏆 0% ~ 1%：抽中神話邊框 (1% 機率)
         if (!db.ownedBorders.includes(GACHA_PRIZES.border.id)) {
             db.ownedBorders.push(GACHA_PRIZES.border.id);
-            resultMessage = `🎉【神話降臨】🎉\n恭喜抽中全服唯一特製邊框：\n✨${GACHA_PRIZES.border.name}✨\n(已解鎖，可至自選清單裝備！)` ;
+            resultMessage = `🎉【神話降臨】🎉\n恭喜抽中特製邊框：\n✨${GACHA_PRIZES.border.name}✨\n(已解鎖，可至自選清單裝備！)` ;
         } else {
             db.coins += 5000; // 重複補償
             resultMessage = `✨ 抽中了【神話邊框】，但你已經有了！自動轉化為 5000 金幣補償！`;
