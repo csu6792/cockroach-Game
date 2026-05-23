@@ -1215,7 +1215,18 @@ function equipTitle(titleName) {
         const isLevelUnlocked = conf.level <= 100 && db.level >= conf.level;
 
         if (isLevelUnlocked || isOwned) {
+            // 1. 寫入基礎配戴變數
             db.equipped_title = titleName;
+            
+            // 2. 🌟 核心修復：防止變數打架！
+            if (conf.source === 'shop' || conf.source === 'gacha') {
+                // 如果穿的是特殊特效稱號，同步更新給 UI 特效系統
+                db.equipped_shop_title = conf.id; 
+            } else {
+                // 如果穿的是普通等級稱號，必須把特效稱號變數「清空」，UI 才會正確顯示普通稱號！
+                db.equipped_shop_title = null;    
+            }
+
             saveDB();
             if (typeof playSound !== 'undefined' && playSound.success) playSound.success();
             renderTitleSelect();
