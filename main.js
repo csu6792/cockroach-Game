@@ -1084,6 +1084,7 @@ function spawnBossCockroach() {
         // PvP Mode Integration Logic
         // ==========================================
         function openPvPModal() {
+			switchBGM(pvpBgm);
             playSound.success();
             document.getElementById('pvp-modal').classList.remove('hidden');
             generateRandomRoom();
@@ -1093,7 +1094,9 @@ function spawnBossCockroach() {
             if (client) { client.end(); client = null; }
             if (pvpState.pingTimer) { clearInterval(pvpState.pingTimer); pvpState.pingTimer = null; }
             document.getElementById('pvp-modal').classList.add('hidden');
+			switchBGM(bgm);
         }
+
 
         function generateRandomRoom() {
             const r = Math.floor(1000 + Math.random() * 9000);
@@ -2378,6 +2381,10 @@ function spawnBossCockroach() {
         const shopBgm = new Audio('shop_bgm.mp3'); // 🌟 新增商城音樂
         shopBgm.loop = true;
         shopBgm.volume = 0.4; // 通常商城音樂可以調稍微小聲、和諧一點
+
+        const pvpBgm = new Audio('pvp_bgm.mp3'); 
+        pvpBgm.loop = true;  
+        pvpBgm.volume = 0.5; 
 
         // 2. 智慧狀態追蹤
         let bgmState = {
