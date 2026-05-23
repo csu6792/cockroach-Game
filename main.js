@@ -54,7 +54,10 @@
             { level: 50, name: '傳說級滅蟑王', color: 'from-red-500 to-rose-600' },
             { level: 75, name: '小強終局夢魘', color: 'from-rose-600 to-red-800' },
             { level: 100, name: '大至尊神之拖', color: 'from-red-500 via-orange-400 to-yellow-300' }
-        ];
+            { id: 'gacha_mythic_title', name: '天使降臨', level: 999, color: 'from-yellow-300 via-amber-500 via-red-500 to-purple-600 tracking-widest drop-shadow-[0_2px_10px_rgba(245,158,11,0.9)]', source: 'gacha' },
+    { id: 'neon_killer', name: '蟑螂終結者', level: 999, color: 'from-cyan-400 to-blue-500 text-shadow-neon', source: 'shop' },
+    { id: 'gold_god', name: '黃金拖鞋神', level: 999, color: 'from-yellow-400 to-amber-200 animate-pulse', source: 'shop' }
+		];
 
         const ITEM_CONFIG = {
             plastic_wrap: { name: '保鮮膜防護罩', icon: 'fa-box-archive', color: 'text-cyan-400', desc: '為目標物套上一層堅固的保鮮膜，5秒內無敵，不受啃食傷害。', cost: 30 }
@@ -1141,48 +1144,82 @@ function spawnBossCockroach() {
             renderTitleSelect();
         }
 
-        function renderTitleSelect() {
-            const list = document.getElementById('unlocked-titles-list');
-            list.innerHTML = '';
+       function renderTitleSelect() {
+    const list = document.getElementById('unlocked-titles-list');
+    if (!list) return;
+    list.innerHTML = '';
 
-            const currentTitle = getEquippedTitle();
+    const currentTitle = getEquippedTitle();
 
-            TITLE_CONFIG.forEach(title => {
-                const isUnlocked = db.level >= title.level;
-                const isEquipped = currentTitle.name === title.name;
+    TITLE_CONFIG.forEach(title => {
+        // 🌟 1. 檢查是否透過扭蛋或商城獲得 (比對陣列內的 id 或稱號字串)
+        const isOwned = db.ownedTitles && (db.ownedTitles.includes(title.id) || db.ownedTitles.includes(title.name));
+        
+        // 🌟 2. 檢查是否達到普通等級解鎖 (999級的特殊稱號會在這裡回傳 false)
+        const isLevelUnlocked = title.level <= 100 && db.level >= title.level;
+        
+        // 最終判定：只要滿足其中一個就算解鎖成功
+        const isUnlocked = isLevelUnlocked || isOwned;
+        const isEquipped = currentTitle.name === title.name;
 
-                let actionHtml = '';
-                if (isEquipped) {
-                    actionHtml = `<span class="bg-emerald-600/30 text-emerald-400 font-bold px-2.5 py-1 rounded-lg text-xs border border-emerald-500/30"><i class="fa-solid fa-circle-check mr-1"></i>配戴中</span>`;
-                } else if (isUnlocked) {
-                    actionHtml = `<button onclick="equipTitle('${title.name}')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-2.5 py-1 rounded-lg border border-zinc-600 text-xs whitespace-nowrap">佩戴稱號</button>`;
-                } else {
-                    actionHtml = `<span class="text-zinc-500 font-bold text-xs flex items-center gap-1"><i class="fa-solid fa-lock text-[10px]"></i> Lv.${title.level} 解鎖</span>`;
-                }
-
-                list.innerHTML += `
-                    <div class="bg-zinc-800/60 rounded-xl p-3 border ${isUnlocked ? 'border-zinc-700/60' : 'border-zinc-800/40'} flex items-center justify-between gap-3">
-                        <div class="flex flex-col">
-                            <span class="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r ${title.color} tracking-wider">
-                                ${title.name}
-                            </span>
-                            ${isUnlocked ? '<span class="text-[9px] text-zinc-500 mt-0.5">已獲得此成就權利</span>' : ''}
-                        </div>
-                        <div>${actionHtml}</div>
-                    </div>
-                `;
-            });
-        }
-
-        function equipTitle(titleName) {
-            const conf = TITLE_CONFIG.find(t => t.name === titleName);
-            if (conf && db.level >= conf.level) {
-                db.equipped_title = titleName;
-                saveDB();
-                playSound.success();
-                renderTitleSelect();
+        let actionHtml = '';
+        if (isEquipped) {
+            actionHtml = `<span class="bg-emerald-600/30 text-emerald-400 font-bold px-2.5 py-1 rounded-lg text-xs border border-emerald-500/30"><i class="fa-solid fa-circle-check mr-1"></i>配戴中</span>`;
+        } else if (isUnlocked) {
+            actionHtml = `<button onclick="equipTitle('${title.name}')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-2.5 py-1 rounded-lg border border-zinc-600 text-xs whitespace-nowrap">佩戴稱號</button>`;
+        } else {
+            // 🌟 3. 根據來源顯示對應的鎖定精美外觀，避免顯示成 Lv.999 解鎖
+            if (title.source === 'gacha') {
+                actionHtml = `<span class="text-purple-400/50 font-bold text-xs flex items-center gap-1 bg-purple-950/20 border border-purple-900/30 px-2 py-1 rounded-lg"><i class="fa-solid fa-lock text-[10px]"></i> 扭蛋限定</span>`;
+            } else if (title.source === 'shop') {
+                actionHtml = `<span class="text-amber-400/50 font-bold text-xs flex items-center gap-1 bg-amber-950/20 border border-amber-900/30 px-2 py-1 rounded-lg"><i class="fa-solid fa-lock text-[10px]"></i> 商店限定</span>`;
+            } else {
+                actionHtml = `<span class="text-zinc-500 font-bold text-xs flex items-center gap-1"><i class="fa-solid fa-lock text-[10px]"></i> Lv.${title.level} 解鎖</span>`;
             }
         }
+
+        // 🌟 4. 優化下方成就小提示
+        let hintText = '';
+        if (isUnlocked) {
+            if (title.source === 'gacha') {
+                hintText = '<span class="text-[9px] text-purple-400 font-black mt-0.5 animate-pulse">🌌 扭蛋至尊至高神話</span>';
+            } else if (title.source === 'shop') {
+                hintText = '<span class="text-[9px] text-amber-400 font-bold mt-0.5">💰 商店特惠尊榮稱號</span>';
+            } else {
+                hintText = '<span class="text-[9px] text-zinc-500 mt-0.5">已獲得此成就權利</span>';
+            }
+        }
+
+        list.innerHTML += `
+            <div class="bg-zinc-800/60 rounded-xl p-3 border ${isUnlocked ? 'border-zinc-700/60' : 'border-zinc-800/40'} flex items-center justify-between gap-3">
+                <div class="flex flex-col">
+                    <span class="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r ${title.color} tracking-wider">
+                        ${title.name}
+                    </span>
+                    ${hintText}
+                </div>
+                <div>${actionHtml}</div>
+            </div>
+        `;
+    });
+}
+
+function equipTitle(titleName) {
+    const conf = TITLE_CONFIG.find(t => t.name === titleName);
+    if (conf) {
+        // 🌟 配戴時同步做雙重檢查
+        const isOwned = db.ownedTitles && (db.ownedTitles.includes(conf.id) || db.ownedTitles.includes(conf.name));
+        const isLevelUnlocked = conf.level <= 100 && db.level >= conf.level;
+
+        if (isLevelUnlocked || isOwned) {
+            db.equipped_title = titleName;
+            saveDB();
+            if (typeof playSound !== 'undefined' && playSound.success) playSound.success();
+            renderTitleSelect();
+            if (typeof updateLobbyUI === 'function') updateLobbyUI(); // 同步重整大廳UI上顯示的頭頂稱號
+        }
+    }
+}
 
         // ==========================================
         // PvP Mode Integration Logic
