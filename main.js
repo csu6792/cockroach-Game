@@ -2313,6 +2313,21 @@ function spawnBossCockroach() {
             }
         }
 
+        // ==========================================
+// 🚀 多點觸控優化模組 (支援左手換武、右手打怪)
+// ==========================================
+window.addEventListener('DOMContentLoaded', () => {
+    // 鎖定下方工具列 (包含武器、道具) 裡所有可以點擊的元素
+    const bottomBarItems = document.querySelectorAll('#bottom-bar .cursor-pointer, #bottom-bar button, .weapon-btn');
+    
+    bottomBarItems.forEach(item => {
+        item.addEventListener('touchstart', function(e) {
+            e.preventDefault(); // 阻止瀏覽器預設的單指等待行為
+            this.click();       // 強制立刻觸發原本寫好的換武器/用道具邏輯
+        }, { passive: false });
+    });
+});
+
         const hours = Math.floor(gameState.time / 60); const mins = Math.floor(gameState.time % 60);
         const timeStr = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
         document.getElementById('lobby-time-display').innerHTML = `<i class="fa-regular fa-sun mr-1 text-yellow-400"></i>${timeStr}`;
