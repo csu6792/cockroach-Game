@@ -196,7 +196,7 @@ function startBossMode() {
     }
     
     // 🔥 提升目標(蛋糕)血量 1.5 倍
-    gameState.targetHp = 150; 
+    gameState.targetHp = 100; 
     updateTargetHpUI(); 
 
     // 觸發紅色 WARNING 警告特效
@@ -283,7 +283,7 @@ function spawnBossCockroach() {
         if (typeof playSound !== 'undefined' && playSound.splat) playSound.splat();
         
         // 扣除 BOSS 血量
-        bossHp -= 10; 
+        bossHp -= 5; 
         updateBossHpBar();
         
         // 受擊小動畫 (加入 translate 確保縮放時不會亂跑)
