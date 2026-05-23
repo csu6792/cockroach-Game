@@ -1835,37 +1835,62 @@ function spawnBossCockroach() {
             if(!gameState.active) return;
             if (e.target.closest('#bottom-bar') || e.target.closest('#top-bar') || e.target.closest('#pvp-traps-panel')) return;
             
-            e.preventDefault(); const pos = getPos(e);
-            if(gameState.mode==='battle') { lastSwipe=pos; triggerAttack(pos.x, pos.y, false); }
-            else {
-                if(gameState.tool==='food') { playSound.eat(); crumbs.push(new Crumb(pos.x,pos.y)); }
-                else if(gameState.tool==='hand') {
-                    // 抓取小強
-                    let f=null; 
-                    for(let i=roaches.length-1; i>=0; i--){ 
-                        if(Math.hypot(roaches[i].x-pos.x,roaches[i].y-pos.y) < 45) { // 加大抓取半徑
-                            f=roaches[i]; break;
-                        } 
+            e.preventDefault(); 
+            
+            // 建立一個內部執行函數，用來處理「單個座標點」的遊戲邏輯
+            function processInput(pos) {
+                if(gameState.mode === 'battle') { 
+                    lastSwipe = pos; 
+                    triggerAttack(pos.x, pos.y, false); 
+                }
+                else {
+                    if(gameState.tool === 'food') { 
+                        playSound.eat(); 
+                        crumbs.push(new Crumb(pos.x,pos.y)); 
                     }
-                    if(f) {
-                        dragTarget=f; dragTarget.state='dragged'; dragTarget.vx=0; dragTarget.vy=0; playSound.eat();
-                    }
-                    else { 
-                        createWaveRing(pos.x,pos.y); 
-                        roaches.forEach(r=>{ 
-                            if(Math.hypot(r.x-pos.x,r.y-pos.y)<120){
-                                const a=Math.atan2(r.y-pos.y,r.x-pos.x);
-                                r.vx=Math.cos(a)*r.speed*2; r.vy=Math.sin(a)*r.speed*2;
+                    else if(gameState.tool === 'hand') {
+                        // 抓取小強
+                        let f = null; 
+                        for(let i=roaches.length-1; i>=0; i--){ 
+                            if(Math.hypot(roaches[i].x-pos.x, roaches[i].y-pos.y) < 45) { // 加大抓取半徑
+                                f = roaches[i]; break;
                             } 
+                        }
+                        if(f) {
+                            dragTarget = f; dragTarget.state = 'dragged'; dragTarget.vx = 0; dragTarget.vy = 0; playSound.eat();
+                        }
+                        else { 
+                            createWaveRing(pos.x, pos.y); 
+                            roaches.forEach(r => { 
+                                if(Math.hypot(r.x-pos.x, r.y-pos.y) < 120){
+                                    const a = Math.atan2(r.y-pos.y, r.x-pos.x);
+                                    r.vx = Math.cos(a)*r.speed*2; r.vy = Math.sin(a)*r.speed*2;
+                                } 
+                            }); 
+                        }
+                    } else if(gameState.tool === 'spray') { 
+                        playSound.boom(); createSpray(pos.x, pos.y); 
+                        roaches.forEach(r => {
+                            const dx = r.x-pos.x, dy = r.y-pos.y, d = Math.hypot(dx,dy);
+                            if(d < 100){ r.vx += (dx/d)*2; r.vy += (dy/d)*2; r.state = 'wandering'; r.targetCrumb = null; }
                         }); 
                     }
-                } else if(gameState.tool==='spray') { 
-                    playSound.boom(); createSpray(pos.x,pos.y); 
-                    roaches.forEach(r=>{
-                        const dx=r.x-pos.x,dy=r.y-pos.y,d=Math.hypot(dx,dy);
-                        if(d<100){r.vx+=(dx/d)*2;r.vy+=(dy/d)*2;r.state='wandering';r.targetCrumb=null;}
-                    }); 
                 }
+            }
+
+            // 🌟 核心魔法：判斷是多指觸控還是滑鼠單點
+            if (e.type === 'touchstart') {
+                // e.changedTouches 包含了「這一瞬間剛碰到螢幕」的所有手指
+                for (let i = 0; i < e.changedTouches.length; i++) {
+                    const touch = e.changedTouches[i];
+                    // 將觸控點偽裝成普通事件，強制 getPos 讀取這根獨立手指的座標
+                    const pos = getPos({ clientX: touch.clientX, clientY: touch.clientY });
+                    processInput(pos); // 針對這根手指觸發攻擊
+                }
+            } else {
+                // 如果是普通滑鼠點擊，走原本的邏輯
+                const pos = getPos(e);
+                processInput(pos);
             }
         }
         function onMove(e) {
