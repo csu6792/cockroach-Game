@@ -707,7 +707,7 @@ function spawnBossCockroach() {
         // UI Navigation & Modals
         // ==========================================
         function updateLobbyUI() {
-			switchBGM(bgm); // 🌟 切換回普通背景音樂
+			
             document.getElementById('lobby-level').textContent = db.level;
             document.getElementById('lobby-coins').textContent = db.coins;
             document.getElementById('shop-coins-display').textContent = db.coins;
@@ -795,6 +795,9 @@ function spawnBossCockroach() {
         }
 
         function backToLobby() {
+			if (typeof switchBGM === 'function' && typeof bgm !== 'undefined') {
+        switchBGM(bgm); 
+    }
             playSound.success(); gameState.active = false;
             document.getElementById('lobby-screen').classList.remove('hidden'); document.getElementById('game-container').classList.add('hidden');
             document.getElementById('top-bar').classList.add('hidden'); document.getElementById('bottom-bar').classList.add('hidden');
