@@ -278,7 +278,7 @@ function spawnBossCockroach() {
         if (typeof playSound !== 'undefined' && playSound.splat) playSound.splat();
         
         // 扣除 BOSS 血量
-        bossHp -= 50; 
+        bossHp -= 10; 
         updateBossHpBar();
         
         // 受擊小動畫
@@ -289,10 +289,10 @@ function spawnBossCockroach() {
         if (bossHp <= 0) {
             clearInterval(bossMoveInterval);
             clearInterval(bossAttackInterval);
-            alert("🎉 恭喜成功擊殺變異大蟑螂王！守護了食物！\n獲得 500 金幣！");
+            alert("🎉 恭喜成功擊殺變異大蟑螂王！守護了食物！\n獲得 100 金幣！");
             
             // 獎勵發放
-            db.coins += 10;
+            db.coins += 100;
             saveDB();
             if (typeof updateLobbyUI === 'function') updateLobbyUI();
             
