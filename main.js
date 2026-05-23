@@ -122,31 +122,202 @@ saveDB();
 
         // ... 貼在 let gameState = { ... }; 的正下方 ...
 
-let isBossMode = false; // 標記當前是否為 BOSS 挑戰模式
+// ==========================================
+// BOSS 戰核心邏輯模組 (完全整合版)
+// ==========================================
+let isBossMode = false;
+let bossHp = 100;
+const bossMaxHp = 100;
+let bossMoveInterval;
+let bossAttackInterval;
 
-/*function checkBossEvent() {
+// 1. 每秒檢查時間：決定左上角按鈕是否出現
+function checkBossEvent() {
     const now = new Date();
     const mins = now.getMinutes();
-    const secs = now.getSeconds();
     const banner = document.getElementById('boss-event-banner');
     const timerText = document.getElementById('boss-timer');
 
-    if (true) { // 每個小時的前 10 分鐘開放 (00分~09分)
+    // 正式上線：每小時的 00~09 分開放
+    // 如果你要測試，可以把下面這行改成 if (true) {
+    if (mins >= 0 && mins < 10) { 
         if (banner) banner.classList.remove('hidden');
         const minsLeft = 9 - mins;
-        const secsLeft = 59 - secs;
-        if (timerText) timerText.innerText = `${minsLeft}:${secsLeft.toString().padStart(2, '0')}`;
+        const secsLeft = 59 - now.getSeconds();
+        if (timerText) {
+            timerText.innerText = `${minsLeft}:${secsLeft.toString().padStart(2, '0')}`;
+        }
     } else {
         if (banner) banner.classList.add('hidden');
     }
-}*/
-// 啟動每秒檢查
-//setInterval(checkBossEvent, 1000);
-//window.addEventListener('DOMContentLoaded', checkBossEvent);
+}
+setInterval(checkBossEvent, 1000);
+window.addEventListener('DOMContentLoaded', checkBossEvent);
 
-/*function startBossMode() {
-    alert("即將開放");
-}*/
+// 2. 玩家點擊按鈕：啟動 BOSS 戰
+function startBossMode() {
+    isBossMode = true;
+    
+    // 隱藏大廳與入口按鈕
+    const banner = document.getElementById('boss-event-banner');
+    if (banner) banner.classList.add('hidden');
+    const lobbyScreen = document.getElementById('lobby-screen');
+    if (lobbyScreen) lobbyScreen.classList.add('hidden');
+    
+    // 切換到遊戲戰場畫面 (開啟上方與下方 UI)
+    document.getElementById('game-container').classList.remove('hidden');
+    document.getElementById('top-bar').classList.remove('hidden');
+    document.getElementById('bottom-bar').classList.remove('hidden');
+    
+    // 🔥 核心機制：提升目標(蛋糕)血量 1.5 倍
+    gameState.targetHp = 150; // 基礎是 100，提升為 150
+    updateTargetHpUI(); // 呼叫下方的更新介面函數
+
+    // 觸發紅色 WARNING 警告特效
+    const warning = document.getElementById('boss-warning-overlay');
+    if (warning) {
+        warning.innerHTML = `<div class="text-6xl md:text-8xl font-black text-red-600 tracking-widest drop-shadow-[0_0_30px_rgba(220,38,38,1)] animate-pulse" style="-webkit-text-stroke: 3px black;">WARNING</div>`;
+        warning.classList.remove('hidden');
+        setTimeout(() => warning.classList.add('hidden'), 2500);
+    }
+
+    // 滑出 BOSS 專屬頂部大血條
+    const bossUi = document.getElementById('boss-ui-container');
+    if (bossUi) {
+        bossUi.classList.remove('hidden');
+        setTimeout(() => bossUi.classList.remove('-translate-y-20'), 100);
+    }
+    
+    bossHp = bossMaxHp;
+    updateBossHpBar();
+
+    // 正式生成大蟑螂！
+    spawnBossCockroach();
+}
+
+// 3. 更新 BOSS 血條顯示
+function updateBossHpBar() {
+    const hpBar = document.getElementById('boss-hp-bar');
+    const hpText = document.getElementById('boss-hp-text');
+    if (hpBar && hpText) {
+        const percent = Math.max(0, (bossHp / bossMaxHp) * 100);
+        hpBar.style.width = `${percent}%`;
+        hpText.innerText = `${bossHp} / ${bossMaxHp}`;
+    }
+}
+
+// 4. 更新守護目標(蛋糕)血條
+function updateTargetHpUI() {
+    const hpBar = document.getElementById('target-hp-bar'); // 左上角的食物血條
+    if (hpBar) {
+        // 因為最大血量變成 150，計算百分比時要對應調整
+        let percent = isBossMode ? (gameState.targetHp / 150) * 100 : gameState.targetHp;
+        hpBar.style.width = `${Math.max(0, percent)}%`;
+        
+        // 血量變色機制
+        if (percent <= 30) hpBar.className = "bg-red-500 h-full w-full transition-all duration-300";
+        else if (percent <= 60) hpBar.className = "bg-yellow-500 h-full w-full transition-all duration-300";
+        else hpBar.className = "bg-green-500 h-full w-full transition-all duration-300";
+    }
+}
+
+// 5. 動態生成 BOSS 與戰鬥(啃咬)邏輯
+function spawnBossCockroach() {
+    const gameScreen = document.getElementById('game-screen') || document.getElementById('game-container');
+    
+    const boss = document.createElement('div');
+    boss.id = 'boss-monster';
+    boss.className = 'absolute z-40 w-40 h-40 cursor-pointer transition-all duration-300 select-none flex items-center justify-center';
+    boss.style.left = '35%';
+    boss.style.top = '40%';
+    
+    boss.innerHTML = `
+        <div class="w-full h-full flex items-center justify-center bg-red-950/30 rounded-full border-4 border-red-600 animate-bounce shadow-[0_0_25px_rgba(220,38,38,0.5)]">
+            <i class="fa-solid fa-bug text-8xl text-red-600 drop-shadow-[0_0_20px_rgba(220,38,38,0.9)]"></i>
+        </div>
+    `;
+
+    // 【玩家攻擊 BOSS】點擊拍打扣血
+    boss.addEventListener('click', function(e) {
+        if (!isBossMode) return;
+        
+        if (typeof playSound !== 'undefined' && playSound.splat) playSound.splat();
+        
+        // 扣除 BOSS 血量
+        bossHp -= 2; 
+        updateBossHpBar();
+        
+        // 受擊動畫
+        boss.style.transform = 'scale(0.8)';
+        setTimeout(() => boss.style.transform = 'scale(1)', 100);
+
+        // 🏆 勝利判定：BOSS 死亡
+        if (bossHp <= 0) {
+            clearInterval(bossMoveInterval);
+            clearInterval(bossAttackInterval);
+            alert("🎉 恭喜成功擊殺變異大蟑螂王！守護了食物！\n獲得 500 金幣！");
+            
+            // 獎勵發放
+            db.coins += 1000;
+            saveDB();
+            
+            // 清理戰場並回到大廳
+            boss.remove();
+            isBossMode = false;
+            document.getElementById('boss-ui-container').classList.add('hidden');
+            backToLobby(); // 呼叫你原本就有的返回大廳函數
+        }
+    });
+
+    gameScreen.appendChild(boss);
+
+    // 【BOSS 機制 A】每 0.75 秒隨機瞬移亂跑
+    bossMoveInterval = setInterval(() => {
+        if (!isBossMode || !document.getElementById('boss-monster')) return;
+        const randomX = Math.floor(Math.random() * 60) + 15;
+        const randomY = Math.floor(Math.random() * 50) + 20;
+        boss.style.left = `${randomX}%`;
+        boss.style.top = `${randomY}%`;
+    }, 750);
+
+    // 【BOSS 機制 B】每 2.5 秒撲向中央狂咬蛋糕
+    bossAttackInterval = setInterval(() => {
+        if (!isBossMode || !document.getElementById('boss-monster')) return;
+        
+        // 衝向畫面中央 (蛋糕位置)
+        boss.style.left = '50%';
+        boss.style.top = '50%';
+        boss.style.transform = 'translate(-50%, -50%) scale(1.3)';
+        
+        if (typeof playSound !== 'undefined' && playSound.eat) playSound.eat();
+
+        setTimeout(() => boss.style.transform = 'translate(-50%, -50%) scale(1)', 300);
+
+        // 扣除蛋糕血量 (BOSS 咬一口扣 10 滴)
+        gameState.targetHp -= 10;
+        updateTargetHpUI();
+        
+        // 畫面閃爍警告「蛋糕被咬了！」
+        const warning = document.getElementById('boss-warning-overlay');
+        if (warning) {
+            warning.innerHTML = `<div class="text-4xl md:text-6xl font-black text-red-600 bg-black/50 px-6 py-2 rounded-2xl border-2 border-red-500">蛋糕被咬了！</div>`;
+            warning.classList.remove('hidden');
+            setTimeout(() => warning.classList.add('hidden'), 300); // 閃 0.3 秒
+        }
+
+        // 💀 失敗判定：蛋糕血量歸零
+        if (gameState.targetHp <= 0) {
+            clearInterval(bossMoveInterval);
+            clearInterval(bossAttackInterval);
+            isBossMode = false;
+            boss.remove();
+            
+            document.getElementById('boss-ui-container').classList.add('hidden');
+            alert("💀 蛋糕被變異大蟑螂王吃光了... Game Over！");
+            backToLobby();
+        }
+    }, 2500);
+}
 
         // ==========================================
         // PVP State Variables
