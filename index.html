@@ -778,6 +778,26 @@
         </div>
     </button>
 </div>
+
+<div id="boss-warning-overlay" class="hidden absolute inset-0 z-[60] pointer-events-none flex items-center justify-center bg-red-900/40">
+        <div class="text-6xl md:text-8xl font-black text-red-600 tracking-widest drop-shadow-[0_0_30px_rgba(220,38,38,1)] animate-pulse" style="-webkit-text-stroke: 3px black;">
+            WARNING
+        </div>
+    </div>
+
+    <div id="boss-ui-container" class="hidden absolute top-6 left-1/2 -translate-x-1/2 z-[55] w-[90%] max-w-lg pointer-events-none transition-all duration-500 transform -translate-y-20">
+        <div class="flex justify-between items-end text-red-500 font-black mb-1 px-1 drop-shadow-md">
+            <span class="flex items-center gap-2 text-lg">
+                <i class="fa-solid fa-bug text-red-600"></i> 變異大蟑螂王 (Lv.MAX)
+            </span>
+            <span id="boss-hp-text" class="text-xl font-mono">100 / 100</span>
+        </div>
+        <div class="w-full bg-zinc-900 border-2 border-red-900 rounded-full h-5 shadow-[0_0_20px_rgba(220,38,38,0.6)] overflow-hidden relative">
+            <div id="boss-hp-bar" class="bg-gradient-to-r from-red-800 via-red-600 to-orange-500 h-full w-full transition-all duration-200"></div>
+            <div class="absolute top-0 left-0 right-0 h-1/2 bg-white/20 rounded-full"></div>
+        </div>
+    </div>
+	
 <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
     <!--<script>
         var vConsole = new window.VConsole();
