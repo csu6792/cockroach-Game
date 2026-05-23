@@ -795,9 +795,7 @@ function spawnBossCockroach() {
         }
 
         function backToLobby() {
-			if (typeof switchBGM === 'function' && typeof bgm !== 'undefined') {
-        switchBGM(bgm); 
-    }
+			
             playSound.success(); gameState.active = false;
             document.getElementById('lobby-screen').classList.remove('hidden'); document.getElementById('game-container').classList.add('hidden');
             document.getElementById('top-bar').classList.add('hidden'); document.getElementById('bottom-bar').classList.add('hidden');
@@ -824,7 +822,9 @@ function spawnBossCockroach() {
         }
 
         function closeModals() {
-			
+			if (typeof switchBGM === 'function' && typeof bgm !== 'undefined') {
+        switchBGM(bgm); 
+    }
             ['scene-modal', 'weapon-modal', 'dex-modal', 'item-modal', 'pvp-modal', 'unified-shop-modal', 'title-select-modal'].forEach(id => document.getElementById(id).classList.add('hidden')); 
         }
 
