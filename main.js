@@ -1147,6 +1147,48 @@ function spawnBossCockroach() {
             renderTitleSelect();
         }
 
+   // =========================================
+// 🏆 稱號判定核心邏輯
+// =========================================
+
+// 取得當前配戴的稱號 (優先級：商城/扭蛋 > 手動配戴的普通稱號 > 等級自動解鎖)
+function getEquippedTitle() {
+    // 🌟 1. 最高優先級：如果有裝備「扭蛋/商城」的特殊稱號，直接回傳
+    if (db.equipped_shop_title) {
+        const specialConf = TITLE_CONFIG.find(t => t.id === db.equipped_shop_title);
+        if (specialConf) {
+            return specialConf;
+        }
+    }
+
+    // 🌟 2. 次要優先級：檢查是否手動裝備了「普通等級」稱號
+    if (db.equipped_title) {
+        const normalConf = TITLE_CONFIG.find(t => t.name === db.equipped_title);
+        // 確保它是普通稱號 (等級 <= 100) 且玩家等級足夠才放行
+        if (normalConf && normalConf.level <= 100 && db.level >= normalConf.level) {
+            return normalConf;
+        }
+    }
+
+    // 🌟 3. 防呆退路：如果什麼都沒裝備，自動回傳當前等級能拿到的最高普通稱號
+    return getTitleForLevel(db.level);
+}
+
+// 取得等級對應的最高稱號 (自動過濾掉 999 級的商城/扭蛋稱號)
+function getTitleForLevel(level) {
+    let currentTitle = TITLE_CONFIG[0]; // 預設給第一個 (例如: 廚房見習生)
+    
+    // 從陣列最後面往前找，找到符合等級條件的就立刻停止
+    for (let i = TITLE_CONFIG.length - 1; i >= 0; i--) {
+        // 🌟 核心過濾：必須小於等於 100 級（排除 999 級的特殊稱號）
+        if (TITLE_CONFIG[i].level <= 100 && level >= TITLE_CONFIG[i].level) {
+            currentTitle = TITLE_CONFIG[i];
+            break;
+        }
+    }
+    return currentTitle;
+}
+
        function renderTitleSelect() {
     const list = document.getElementById('unlocked-titles-list');
     if (!list) return;
@@ -1163,15 +1205,21 @@ function spawnBossCockroach() {
         
         // 最終判定：只要滿足其中一個就算解鎖成功
         const isUnlocked = isLevelUnlocked || isOwned;
-        const isEquipped = currentTitle.name === title.name;
+
+        // 🌟 核心修改：更強大、更防呆的配戴中判定！(加入 currentTitle 防呆與 ID 雙重比對)
+        const isEquipped = currentTitle && (
+            (currentTitle.id && title.id && currentTitle.id === title.id) || 
+            (currentTitle.name === title.name)
+        );
 
         let actionHtml = '';
         if (isEquipped) {
-            actionHtml = `<span class="bg-emerald-600/30 text-emerald-400 font-bold px-2.5 py-1 rounded-lg text-xs border border-emerald-500/30"><i class="fa-solid fa-circle-check mr-1"></i>配戴中</span>`;
+            // 加上配戴中的專屬高亮外框，視覺效果更好
+            actionHtml = `<span class="bg-emerald-600/30 text-emerald-400 font-bold px-2.5 py-1 rounded-lg text-xs border border-emerald-500/30 flex items-center gap-1"><i class="fa-solid fa-circle-check"></i>配戴中</span>`;
         } else if (isUnlocked) {
-            actionHtml = `<button onclick="equipTitle('${title.name}')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-2.5 py-1 rounded-lg border border-zinc-600 text-xs whitespace-nowrap">佩戴稱號</button>`;
+            actionHtml = `<button onclick="equipTitle('${title.name}')" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 font-bold px-2.5 py-1 rounded-lg border border-zinc-600 text-xs whitespace-nowrap transition-colors">佩戴稱號</button>`;
         } else {
-            // 🌟 3. 根據來源顯示對應的鎖定精美外觀，避免顯示成 Lv.999 解鎖
+            // 🌟 3. 根據來源顯示對應的鎖定精美外觀
             if (title.source === 'gacha') {
                 actionHtml = `<span class="text-purple-400/50 font-bold text-xs flex items-center gap-1 bg-purple-950/20 border border-purple-900/30 px-2 py-1 rounded-lg"><i class="fa-solid fa-lock text-[10px]"></i> 扭蛋限定</span>`;
             } else if (title.source === 'shop') {
@@ -1193,13 +1241,16 @@ function spawnBossCockroach() {
             }
         }
 
+        // 確保沒有 hintText 時不會多出一行空白
+        const hintHtml = hintText ? hintText : '';
+
         list.innerHTML += `
-            <div class="bg-zinc-800/60 rounded-xl p-3 border ${isUnlocked ? 'border-zinc-700/60' : 'border-zinc-800/40'} flex items-center justify-between gap-3">
+            <div class="bg-zinc-800/60 rounded-xl p-3 border ${isEquipped ? 'border-emerald-500/30 bg-emerald-950/10' : (isUnlocked ? 'border-zinc-700/60' : 'border-zinc-800/40')} flex items-center justify-between gap-3 transition-all">
                 <div class="flex flex-col">
                     <span class="text-sm font-black text-transparent bg-clip-text bg-gradient-to-r ${title.color} tracking-wider">
                         ${title.name}
                     </span>
-                    ${hintText}
+                    ${hintHtml}
                 </div>
                 <div>${actionHtml}</div>
             </div>
