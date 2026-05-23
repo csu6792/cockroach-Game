@@ -53,10 +53,10 @@
             { level: 40, name: '暗影終結者', color: 'from-fuchsia-500 to-purple-600' },
             { level: 50, name: '傳說級滅蟑王', color: 'from-red-500 to-rose-600' },
             { level: 75, name: '小強終局夢魘', color: 'from-rose-600 to-red-800' },
-            { level: 100, name: '大至尊神之拖', color: 'from-red-500 via-orange-400 to-yellow-300' }
+            { level: 100, name: '大至尊神之拖', color: 'from-red-500 via-orange-400 to-yellow-300' },
             { id: 'gacha_mythic_title', name: '天使降臨', level: 999, color: 'from-yellow-300 via-amber-500 via-red-500 to-purple-600 tracking-widest drop-shadow-[0_2px_10px_rgba(245,158,11,0.9)]', source: 'gacha' },
-    { id: 'neon_killer', name: '蟑螂終結者', level: 999, color: 'from-cyan-400 to-blue-500 text-shadow-neon', source: 'shop' },
-    { id: 'gold_god', name: '黃金拖鞋神', level: 999, color: 'from-yellow-400 to-amber-200 animate-pulse', source: 'shop' }
+            { id: 'neon_killer', name: '蟑螂終結者', level: 999, color: 'from-cyan-400 to-blue-500 text-shadow-neon', source: 'shop' },
+            { id: 'gold_god', name: '黃金拖鞋神', level: 999, color: 'from-yellow-400 to-amber-200 animate-pulse', source: 'shop' }
 		];
 
         const ITEM_CONFIG = {
