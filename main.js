@@ -815,11 +815,12 @@ function spawnBossCockroach() {
             const hours = Math.floor(gameState.time / 60); const mins = Math.floor(gameState.time % 60);
             const timeStr = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
             document.getElementById('lobby-time-display').innerHTML = gameState.isNight ? `<i class="fa-solid fa-moon mr-1 text-purple-400"></i>${timeStr}` : `<i class="fa-regular fa-sun mr-1 text-yellow-400"></i>${timeStr}`;
-            switchBGM(bgm); // 🌟 切換回普通背景音樂
+            
             clearEntities(); updateLobbyUI(); saveDB();
         }
 
-        function closeModals() { 
+        function closeModals() {
+			switchBGM(bgm); // 🌟 切換回普通背景音樂
             ['scene-modal', 'weapon-modal', 'dex-modal', 'item-modal', 'pvp-modal', 'unified-shop-modal', 'title-select-modal'].forEach(id => document.getElementById(id).classList.add('hidden')); 
         }
 
