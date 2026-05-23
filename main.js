@@ -2245,78 +2245,39 @@ function spawnBossCockroach() {
             animateLobby();
         }
 
+        // ==========================================
+        // 🎵 MP3 背景音樂系統 (取代原本的電子合成器)
+        // ==========================================
+        
+        // 1. 建立音樂物件 (請確保你的音樂檔名叫 bgm.mp3，並放在同一個資料夾)
+        const bgm = new Audio('bgm.mp3'); 
+        bgm.loop = true;  // 設定無限循環
+        bgm.volume = 0.5; // 音量大小 (0.0 ~ 1.0)
+
+        // 2. 簡化版的狀態追蹤
         let bgmState = {
-            isPlaying: false,
-            timerId: null,
-            nextNoteTime: 0.0,
-            tempo: 130.0,
-            current16thNote: 0,
-            muted: true
+            muted: true // 預設為靜音 (配合你原本的設定)
         };
 
-        const bassLine = [36, 0, 36, 43, 45, 0, 45, 41];
-        const melodyLine = [
-            60, 64, 67, 71, 69, 72, 76, 79, 
-            67, 0, 64, 67, 65, 69, 72, 76
-        ];
-
-        function playBgmNote(midi, time, duration, type, volume) {
-            if (midi === 0 || !midi) return;
-            const freq = Math.pow(2, (midi - 69) / 12) * 440;
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, time);
-            
-            gain.gain.setValueAtTime(0, time);
-            gain.gain.linearRampToValueAtTime(volume, time + 0.01);
-            gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
-            
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            
-            osc.start(time);
-            osc.stop(time + duration + 0.05);
-        }
-
-        function scheduler() {
-            while (bgmState.nextNoteTime < audioCtx.currentTime + 0.1) {
-                scheduleNote(bgmState.current16thNote, bgmState.nextNoteTime);
-                nextNote();
-            }
-        }
-
-        function nextNote() {
-            const secondsPerBeat = 60.0 / bgmState.tempo;
-            bgmState.nextNoteTime += 0.25 * secondsPerBeat;
-            bgmState.current16thNote = (bgmState.current16thNote + 1) % 16;
-        }
-
-        function scheduleNote(step, time) {
-            if (bgmState.muted) return;
-            const bassMidi = bassLine[step % 8];
-            if (bassMidi > 0) {
-                playBgmNote(bassMidi, time, 0.16, 'triangle', 0.08);
-            }
-            const melMidi = melodyLine[step];
-            if (melMidi > 0 && Math.random() < 0.85) {
-                playBgmNote(melMidi, time, 0.1, 'sine', 0.02);
-            }
-        }
-
+        // 3. 切換音樂開關與 UI 按鈕的函數
         function toggleMusic() {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
+            // 切換靜音狀態
             bgmState.muted = !bgmState.muted;
-            if (!bgmState.isPlaying && !bgmState.muted) {
-                bgmState.isPlaying = true;
-                bgmState.nextNoteTime = audioCtx.currentTime;
-                bgmState.timerId = setInterval(scheduler, 100);
+            
+            // 根據狀態控制 MP3 播放或暫停
+            if (bgmState.muted) {
+                bgm.pause(); // 靜音時暫停播放
+            } else {
+                // 播放並捕捉可能因為瀏覽器自動播放限制而產生的錯誤
+                bgm.play().catch(e => console.log("等待玩家互動後才能播放 BGM"));
             }
+
+            // ==========================================
+            // 下方完全保留你原本用來切換「大廳」與「遊戲」中喇叭圖示的邏輯
+            // ==========================================
             const lobbyBtn = document.getElementById('lobby-music-btn');
             const gameBtn = document.getElementById('game-music-btn');
+            
             if (bgmState.muted) {
                 if (lobbyBtn) {
                     lobbyBtn.className = "text-zinc-500 hover:text-zinc-400 p-1 bg-zinc-800/80 rounded-full border border-zinc-700/50 flex items-center justify-center w-6 h-6 z-20 pointer-events-auto";
