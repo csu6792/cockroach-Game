@@ -2281,19 +2281,12 @@ function spawnBossCockroach() {
 
         // 3. 核心魔法：專門用來切換音樂軌道的函數
        function switchBGM(targetAudio) {
-            // 💡 安全檢查：如果玩家其實已經關閉了商城、回到大廳（大廳畫面不是隱藏的）
-            // 卻不小心要切換成商城音樂，我們就強行修正為普通大廳音樂，防止卡歌！
-            const lobbyScreen = document.getElementById('lobby-screen');
-            if (lobbyScreen && !lobbyScreen.classList.contains('hidden') && targetAudio === shopBgm) {
-                targetAudio = bgm; 
-            }
-
-            // 如果本來就在播這首，就不用重頭播，直接跳出防止音樂中斷
+            // 如果本來就在播這首，就不用重頭播
             if (bgmState.currentAudio === targetAudio && !bgmState.currentAudio.paused) {
                 return;
             }
 
-            // 讓目前的音樂暫停，並重設時間回到開頭
+            // 讓目前的音樂暫停，並重設時間
             if (bgmState.currentAudio) {
                 bgmState.currentAudio.pause();
                 bgmState.currentAudio.currentTime = 0;
@@ -2302,7 +2295,7 @@ function spawnBossCockroach() {
             // 指向新的音樂軌道
             bgmState.currentAudio = targetAudio;
             
-            // 如果玩家「沒有靜音」，就立刻播放新音樂
+            // 如果玩家「沒有靜音」，就立刻播放
             if (!bgmState.muted && bgmState.currentAudio) {
                 bgmState.currentAudio.play().catch(e => console.log("切換音樂被瀏覽器攔截"));
             }
