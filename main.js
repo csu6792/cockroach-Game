@@ -707,6 +707,7 @@ function spawnBossCockroach() {
         // UI Navigation & Modals
         // ==========================================
         function updateLobbyUI() {
+			switchBGM(bgm); // 🌟 切換回普通背景音樂
             document.getElementById('lobby-level').textContent = db.level;
             document.getElementById('lobby-coins').textContent = db.coins;
             document.getElementById('shop-coins-display').textContent = db.coins;
@@ -820,7 +821,7 @@ function spawnBossCockroach() {
         }
 
         function closeModals() {
-			switchBGM(bgm); // 🌟 切換回普通背景音樂
+			
             ['scene-modal', 'weapon-modal', 'dex-modal', 'item-modal', 'pvp-modal', 'unified-shop-modal', 'title-select-modal'].forEach(id => document.getElementById(id).classList.add('hidden')); 
         }
 
