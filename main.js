@@ -325,7 +325,7 @@ function spawnBossCockroach() {
         const randomY = Math.floor(Math.random() * 40) + 15;
         boss.style.left = `${randomX}%`;
         boss.style.top = `${randomY}%`;
-    }, 750);
+    }, 500);
 
     // 【BOSS 機制 B】每 2.5 秒撲向中央狂咬蛋糕
     bossAttackInterval = setInterval(() => {
