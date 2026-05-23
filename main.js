@@ -258,32 +258,37 @@ function spawnBossCockroach() {
     
     const boss = document.createElement('div');
     boss.id = 'boss-monster';
-    boss.className = 'absolute z-40 w-40 h-40 cursor-pointer transition-all duration-300 select-none flex items-center justify-center';
+    // 🌟 修正 1：移除 transition-all 防止判定脫節，並加大點擊範圍 (w-48 h-48)
+    boss.className = 'absolute z-[60] w-48 h-48 cursor-pointer select-none flex items-center justify-center transform -translate-x-1/2 -translate-y-1/2';
     
     // 初始位置設定在畫面偏上方，露出中央的蛋糕
     boss.style.left = '35%';
     boss.style.top = '25%';
     
+    // 裡面的紅色光圈一樣保留動畫，但不影響外層判定框
     boss.innerHTML = `
-        <div class="w-full h-full flex items-center justify-center bg-red-950/30 rounded-full border-4 border-red-600 animate-bounce shadow-[0_0_25px_rgba(220,38,38,0.5)]">
+        <div class="w-40 h-40 flex items-center justify-center bg-red-950/30 rounded-full border-4 border-red-600 animate-bounce shadow-[0_0_25px_rgba(220,38,38,0.5)] transition-transform duration-100">
             <i class="fa-solid fa-bug text-8xl text-red-600 drop-shadow-[0_0_20px_rgba(220,38,38,0.9)]"></i>
         </div>
     `;
 
-    // 【玩家攻擊 BOSS】點擊拍打扣血
-    boss.addEventListener('click', function(e) {
+    // 🌟 修正 2：升級為雙棲多點觸控 (取代原本的 click)
+    function hitBoss(e) {
+        // 阻止瀏覽器預設行為，讓手指可以像機關槍一樣狂戳
+        if (e.type === 'touchstart') e.preventDefault(); 
+        
         if (!isBossMode) return;
         
-        // 播放你原本寫的網頁合成音效
+        // 播放合成音效
         if (typeof playSound !== 'undefined' && playSound.splat) playSound.splat();
         
         // 扣除 BOSS 血量
         bossHp -= 10; 
         updateBossHpBar();
         
-        // 受擊小動畫
-        boss.style.transform = 'scale(0.8)';
-        setTimeout(() => boss.style.transform = 'scale(1)', 100);
+        // 受擊小動畫 (加入 translate 確保縮放時不會亂跑)
+        boss.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        setTimeout(() => boss.style.transform = 'translate(-50%, -50%) scale(1)', 100);
 
         // 🏆 勝利判定：BOSS 死亡
         if (bossHp <= 0) {
@@ -298,13 +303,17 @@ function spawnBossCockroach() {
             
             // 清理戰場並回到大廳
             boss.remove();
-			const cake = document.getElementById('boss-cake-element');
-            if (cake) cake.remove();
+            const cake = document.getElementById('boss-cake-element');
+            if (cake) cake.remove(); 
             isBossMode = false;
             document.getElementById('boss-ui-container').classList.add('hidden');
-            backToLobby(); 
+            if (typeof backToLobby === 'function') backToLobby(); 
         }
-    });
+    }
+
+    // 將滑鼠與觸控同時綁定！
+    boss.addEventListener('mousedown', hitBoss);
+    boss.addEventListener('touchstart', hitBoss, { passive: false });
 
     gameScreen.appendChild(boss);
 
