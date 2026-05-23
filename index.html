@@ -274,64 +274,49 @@
         </div>
     </div>
 
-	<div id="gacha-modal" class="hidden absolute inset-0 z-[60] bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-zinc-900 border border-purple-500/40 w-full max-w-sm rounded-3xl p-6 shadow-[0_0_50px_rgba(168,85,247,0.4)] flex flex-col text-center relative overflow-hidden">
-            
-            <div class="absolute -top-20 -right-20 w-40 h-40 bg-purple-600 rounded-full blur-[80px] opacity-50 pointer-events-none"></div>
-            
-            <button onclick="document.getElementById('gacha-modal').classList.add('hidden')" class="absolute top-4 right-4 text-zinc-500 hover:text-white text-xl z-10 transition">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
+	<div id="gacha-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4">
+    <div class="bg-zinc-950 border-2 border-purple-950 w-full max-w-md rounded-3xl p-6 relative shadow-[0_0_50px_rgba(147,51,234,0.3)] text-center overflow-hidden">
+        
+        <div class="absolute -top-24 -left-24 w-48 h-48 bg-purple-600/20 blur-3xl rounded-full"></div>
+        <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-pink-600/20 blur-3xl rounded-full"></div>
 
-            <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400 tracking-wider mb-1 mt-2">
-                扭蛋機
-            </h2>
-            <p class="text-xs text-zinc-400 mb-5">拼人品爆發！抽限定最炫動態流光特效！</p>
+        <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-amber-400 tracking-wider mb-1">🎰 神話至尊扭蛋機</h2>
+        <p class="text-[11px] text-zinc-500 mb-4">每次消耗 <span class="text-yellow-500 font-bold">1,000</span> 金幣，有機會獲得全服神話特效！</p>
 
-            <div class="bg-zinc-950 p-4 rounded-xl border border-zinc-800/80 mb-5 relative overflow-hidden shadow-inner">
-                <div class="grid grid-cols-3 gap-2 text-[11px] font-bold">
-                    <div class="p-2 bg-purple-950/40 border border-purple-800/50 rounded-lg text-purple-300">
-                        <span class="block text-xs font-black text-purple-400">有機率</span>
-                        流光邊框
-                    </div>
-                    <div class="p-2 bg-amber-950/40 border border-amber-800/50 rounded-lg text-amber-300">
-                        <span class="block text-xs font-black text-amber-400">有機率</span>
-                        天使降臨
-                    </div>
-                    <div class="p-2 bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-400">
-                        <span class="block text-xs font-black text-zinc-500">高機率</span>
-                        100 經驗值
-                    </div>
-                </div>
-                
-              <div class="mt-5 mb-2 flex flex-col items-center justify-center relative">
-                    <div class="absolute -inset-4 bg-purple-500/10 blur-xl rounded-full pointer-events-none"></div>
-                    <span class="text-[10px] text-purple-400 mb-3 font-black tracking-widest animate-pulse">👇 終極大獎特效預覽 👇</span>
-                    
-                    <div class="w-full max-w-[220px] bg-black/80 border-4 border-transparent bg-gradient-to-r from-purple-600 via-pink-500 via-red-500 to-yellow-500 bg-[length:400%_400%] shadow-[0_0_25px_rgba(236,72,153,0.6)] p-3 rounded-2xl flex flex-col items-center justify-center relative z-10">
-                        
-                        <div class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-500 via-red-500 to-purple-600 bg-[length:200%_auto] text-sm tracking-widest drop-shadow-[0_2px_10px_rgba(245,158,11,0.9)] mb-2 text-center">
-                            天使降臨
-                        </div>
-                        
-                        <div class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center mb-1.5 border border-zinc-600 shadow-inner">
-                            <i class="fa-solid fa-user text-2xl text-zinc-400"></i>
-                        </div>
-                        <div class="text-white font-bold text-xs drop-shadow-md">你的名字 (預覽)</div>
-                    </div>
+        <div id="gacha-stage" class="min-h-[220px] flex items-center justify-center relative my-4 transition-all duration-300">
+            
+            <div id="gacha-preview-state" class="flex flex-col items-center">
+                <span class="text-[10px] text-purple-400 mb-3 font-black tracking-widest animate-pulse">👇 終極大獎特效預覽 👇</span>
+                <div class="w-52 bg-black/80 border-4 border-transparent bg-gradient-to-r from-purple-600 via-pink-500 via-red-500 to-yellow-500 bg-[length:400%_400%] shadow-[0_0_25px_rgba(236,72,153,0.6)] p-3 rounded-2xl flex flex-col items-center justify-center">
+                    <div class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-amber-500 via-red-500 to-purple-600 bg-[length:200%_auto] text-xs tracking-widest drop-shadow-[0_2px_10px_rgba(245,158,11,0.9)] mb-2 text-center">👑 🛑 弒神之皇 🛑 👑</div>
+                    <div class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center mb-1.5 border border-zinc-600"><i class="fa-solid fa-user text-xl text-zinc-400"></i></div>
+                    <div class="text-white font-bold text-[11px]">終極大獎展示</div>
                 </div>
             </div>
 
-            <button onclick="playGacha()" class="w-full py-3.5 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 hover:from-purple-500 hover:to-orange-400 text-white font-black rounded-xl text-lg shadow-[0_4px_20px_rgba(236,72,153,0.3)] transition active:scale-95 flex items-center justify-center gap-2">
-                <i class="fa-solid fa-coins text-yellow-300 animate-spin" style="animation-duration: 3s;"></i>
-                啟動扭蛋 (1000 金幣)
-            </button>
-            
-            <div class="text-[10px] text-zinc-500 mt-4 font-medium">
-                ※ 若抽中已持有的限定大獎，將自動轉換為 5000 金幣！
+            <div id="gacha-shaking-state" class="hidden flex flex-col items-center justify-center">
+                <div class="text-8xl animate-[shake_0.15s_infinite] drop-shadow-[0_0_30px_rgba(168,85,247,0.6)]">🔮</div>
+                <p class="text-purple-400 font-black text-sm mt-4 tracking-widest animate-pulse">正在強力注入神話能量...</p>
+            </div>
+
+            <div id="gacha-reward-state" class="hidden flex flex-col items-center scale-0 transition-transform duration-500">
+                <div id="reward-glow-bg" class="absolute inset-0 bg-purple-500/20 blur-2xl rounded-full animate-ping"></div>
+                <h3 id="reward-rarity" class="text-xs font-black tracking-widest mb-1 text-purple-400">🎉【抽中獎勵】🎉</h3>
+                <div id="reward-display-box" class="my-3">
+                    </div>
             </div>
         </div>
+
+        <div class="flex gap-3 mt-6">
+            <button id="gacha-close-btn" onclick="document.getElementById('gacha-modal').classList.add('hidden'); if(typeof switchBGM==='function') switchBGM(bgm);" class="w-1/3 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-400 font-bold py-2.5 rounded-xl transition text-sm">
+                離開
+            </button>
+            <button id="gacha-play-btn" onclick="playGacha()" class="flex-1 bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 hover:from-purple-500 hover:to-red-400 text-white font-black py-2.5 rounded-xl shadow-[0_0_20px_rgba(168,85,247,0.4)] active:scale-95 transition text-sm tracking-wider">
+                🚀 啟動扭蛋 (1000金幣)
+            </button>
+        </div>
     </div>
+</div>
 
     <!-- 場景選擇 Modal -->
     <div id="scene-modal" class="hidden absolute inset-0 z-[60] bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
