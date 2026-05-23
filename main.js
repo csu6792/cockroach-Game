@@ -140,9 +140,9 @@ function checkBossEvent() {
 
     // 測試期間可以用 if (true) 強制讓按鈕一直出現
     // 正式營運請用：if (mins >= 0 && mins < 10)
-    if (mins >= 0 && mins < 10) { 
+    if (mins >= 0 && mins < 30) { 
         if (banner) banner.classList.remove('hidden');
-        const minsLeft = 9 - mins;
+        const minsLeft = 29 - mins;
         const secsLeft = 59 - now.getSeconds();
         if (timerText) {
             timerText.innerText = `${minsLeft}:${secsLeft.toString().padStart(2, '0')}`;
