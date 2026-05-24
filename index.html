@@ -166,7 +166,7 @@
                     <i class="fa-solid fa-bug ml-4 rotate-12 text-amber-700"></i>
                 </div>
                 <h1 class="text-4xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-br from-yellow-300 to-amber-600 drop-shadow-lg tracking-wider">不准動！<br>小強大作戰</h1>
-                <p>1.0523</p>
+                <p>1.1524</p>
 			</div>
 
             <!-- Player Stats -->
@@ -204,37 +204,44 @@
 
             <!-- Menu Buttons -->
             <div class="grid grid-cols-2 gap-3 w-full mb-3">
-                <button onclick="openSceneSelect('battle')" class="col-span-2 group relative bg-gradient-to-r from-rose-600 to-red-700 hover:from-rose-500 hover:to-red-600 text-white font-black text-xl py-3 rounded-2xl shadow-[0_0_20px_rgba(225,29,72,0.4)] active:scale-95 transition overflow-hidden border border-red-400/50">
-                    <div class="absolute inset-0 bg-white/20 group-hover:translate-x-full -translate-x-full skew-x-12 transition-transform duration-700"></div>
-                    <i class="fa-solid fa-crosshairs mr-2"></i> 挑戰模式
-                </button>
-                <button onclick="openPvPModal()" class="col-span-2 group relative bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white font-black text-xl py-3 rounded-2xl shadow-[0_0_20px_rgba(59,130,246,0.4)] active:scale-95 transition overflow-hidden border border-blue-400/50">
-                    <div class="absolute inset-0 bg-white/20 group-hover:translate-x-full -translate-x-full skew-x-12 transition-transform duration-700"></div>
-                    <i class="fa-solid fa-gamepad mr-2"></i> 1對1 連線對戰 (PvP)
-                </button>
-                <!-- 新增：特效外框商城入口 (跨2欄以符合設計格調) -->
-               <button onclick="openUnifiedShop()" class="group relative bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-black text-base py-2.5 rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.3)] active:scale-95 transition overflow-hidden border border-purple-400/50 flex items-center justify-center">
-                    <div class="absolute inset-0 bg-white/20 group-hover:translate-x-full -translate-x-full skew-x-12 transition-transform duration-700"></div>
-                    <i class="fa-solid fa-wand-magic-sparkles mr-1.5"></i> 商城
-                </button>
+    
+    <button onclick="openSceneSelect('battle')" class="col-span-2 group relative bg-gradient-to-b from-red-400 to-red-600 hover:brightness-110 text-white font-black text-2xl py-3 rounded-2xl border-2 border-red-300 border-b-[6px] border-b-red-900 shadow-[inset_0_3px_2px_rgba(255,255,255,0.4),0_8px_15px_rgba(225,29,72,0.4)] active:border-b-0 active:translate-y-[6px] transition-all overflow-hidden flex items-center justify-center tracking-wider">
+        <div class="absolute inset-0 bg-white/20 group-hover:translate-x-full -translate-x-full skew-x-12 transition-transform duration-700"></div>
+        <i class="fa-solid fa-crosshairs mr-2 drop-shadow-md"></i> <span style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">挑戰模式</span>
+    </button>
 
-                <button onclick="document.getElementById('gacha-modal').classList.remove('hidden')" class="group relative bg-gradient-to-r from-purple-600 via-pink-600 to-red-500 text-white font-black text-base py-2.5 rounded-2xl shadow-[0_0_15px_rgba(168,85,247,0.5)] active:scale-95 transition overflow-hidden border border-red-400/50 flex items-center justify-center">
-                    <div class="absolute inset-0 bg-white/20 group-hover:translate-x-full -translate-x-full skew-x-12 transition-transform duration-700"></div>
-                    🎰 扭蛋機
-                </button>
-                <button onclick="openSceneSelect('sandbox')" class="bg-zinc-800 hover:bg-zinc-700 text-blue-400 font-bold text-base py-3 rounded-2xl border border-blue-900/50 active:scale-95 transition">
-                    <i class="fa-solid fa-flask mr-1"></i> 生態箱
-                </button>
-                <button onclick="openWeaponShop()" class="bg-zinc-800 hover:bg-zinc-700 text-emerald-400 font-bold text-base py-3 rounded-2xl border border-emerald-900/50 active:scale-95 transition">
-                    <i class="fa-solid fa-wrench mr-1"></i> 武器
-                </button>
-                <button onclick="openDex()" class="bg-zinc-800 hover:bg-zinc-700 text-purple-400 font-bold text-base py-3 rounded-2xl border border-purple-900/50 active:scale-95 transition">
-                    <i class="fa-solid fa-book-journal-whills mr-1"></i> 圖記 <span id="dex-progress" class="text-xs text-zinc-400 ml-1 font-mono">0/4</span>
-                </button>
-                <button onclick="openItemShop()" class="bg-zinc-800 hover:bg-zinc-700 text-cyan-400 font-bold text-base py-3 rounded-2xl border border-cyan-900/50 active:scale-95 transition">
-                    <i class="fa-solid fa-box-open mr-1"></i> 道具
-                </button>
-            </div>
+    <button onclick="openPvPModal()" class="col-span-2 group relative bg-gradient-to-b from-blue-400 to-blue-600 hover:brightness-110 text-white font-black text-xl py-3 rounded-2xl border-2 border-blue-300 border-b-[6px] border-b-blue-900 shadow-[inset_0_3px_2px_rgba(255,255,255,0.4),0_8px_15px_rgba(59,130,246,0.4)] active:border-b-0 active:translate-y-[6px] transition-all overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 bg-white/20 group-hover:translate-x-full -translate-x-full skew-x-12 transition-transform duration-700"></div>
+        <i class="fa-solid fa-gamepad mr-2 drop-shadow-md"></i> <span style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">1對1 連線對戰 (PvP)</span>
+    </button>
+
+    <button onclick="openUnifiedShop()" class="group relative bg-gradient-to-b from-purple-400 to-purple-600 hover:brightness-110 text-white font-black text-base py-2.5 rounded-xl border border-purple-300 border-b-[5px] border-b-purple-900 shadow-[inset_0_2px_1px_rgba(255,255,255,0.4),0_5px_10px_rgba(168,85,247,0.3)] active:border-b-[1px] active:translate-y-[4px] transition-all overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 bg-white/20 group-hover:translate-x-full -translate-x-full skew-x-12 transition-transform duration-700"></div>
+        <i class="fa-solid fa-wand-magic-sparkles mr-1.5 drop-shadow-md"></i> <span style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">商城</span>
+    </button>
+
+    <button onclick="document.getElementById('gacha-modal').classList.remove('hidden')" class="group relative bg-gradient-to-b from-pink-400 to-rose-500 hover:brightness-110 text-white font-black text-base py-2.5 rounded-xl border border-pink-300 border-b-[5px] border-b-rose-900 shadow-[inset_0_2px_1px_rgba(255,255,255,0.4),0_5px_10px_rgba(244,63,94,0.3)] active:border-b-[1px] active:translate-y-[4px] transition-all overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 bg-white/20 group-hover:translate-x-full -translate-x-full skew-x-12 transition-transform duration-700"></div>
+        <span class="drop-shadow-md mr-1">🎰</span> <span style="text-shadow: 0 2px 4px rgba(0,0,0,0.5);">扭蛋機</span>
+    </button>
+
+    <button onclick="openSceneSelect('sandbox')" class="bg-gradient-to-b from-zinc-600 to-zinc-800 hover:brightness-110 text-blue-300 font-bold text-base py-2.5 rounded-xl border border-zinc-500 border-b-[5px] border-b-black shadow-[inset_0_2px_1px_rgba(255,255,255,0.2),0_5px_10px_rgba(0,0,0,0.5)] active:border-b-[1px] active:translate-y-[4px] transition-all flex items-center justify-center">
+        <i class="fa-solid fa-flask mr-1.5"></i> <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.8);">生態箱</span>
+    </button>
+    
+    <button onclick="openWeaponShop()" class="bg-gradient-to-b from-zinc-600 to-zinc-800 hover:brightness-110 text-emerald-400 font-bold text-base py-2.5 rounded-xl border border-zinc-500 border-b-[5px] border-b-black shadow-[inset_0_2px_1px_rgba(255,255,255,0.2),0_5px_10px_rgba(0,0,0,0.5)] active:border-b-[1px] active:translate-y-[4px] transition-all flex items-center justify-center">
+        <i class="fa-solid fa-wrench mr-1.5"></i> <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.8);">武器</span>
+    </button>
+
+    <button onclick="openDex()" class="bg-gradient-to-b from-zinc-600 to-zinc-800 hover:brightness-110 text-purple-300 font-bold text-base py-2.5 rounded-xl border border-zinc-500 border-b-[5px] border-b-black shadow-[inset_0_2px_1px_rgba(255,255,255,0.2),0_5px_10px_rgba(0,0,0,0.5)] active:border-b-[1px] active:translate-y-[4px] transition-all flex items-center justify-center">
+        <i class="fa-solid fa-book-journal-whills mr-1.5"></i> <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.8);">圖記</span> <span id="dex-progress" class="text-[10px] text-zinc-400 ml-1.5 bg-black/50 px-1 rounded font-mono">0/4</span>
+    </button>
+
+    <button onclick="openItemShop()" class="bg-gradient-to-b from-zinc-600 to-zinc-800 hover:brightness-110 text-cyan-300 font-bold text-base py-2.5 rounded-xl border border-zinc-500 border-b-[5px] border-b-black shadow-[inset_0_2px_1px_rgba(255,255,255,0.2),0_5px_10px_rgba(0,0,0,0.5)] active:border-b-[1px] active:translate-y-[4px] transition-all flex items-center justify-center">
+        <i class="fa-solid fa-box-open mr-1.5"></i> <span style="text-shadow: 0 1px 3px rgba(0,0,0,0.8);">道具</span>
+    </button>
+
+</div>
         </div>
     </div>
 
