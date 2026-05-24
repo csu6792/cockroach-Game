@@ -141,7 +141,7 @@ saveDB();
 
         let gameState = {
             active: false, mode: 'battle', scene: 'kitchen',
-            score: 0, sessionCoins: 0, targetHp: 150,
+            score: 0, sessionCoins: 0, targetHp: 500,
             weapon: 'slipper', cooldowns: { slipper: 0, grandma_slipper: 0, newspaper: 0, pesticide_bomb: 0, golden_slipper: 0 },
             tool: 'food', combo: 0, lastKillTime: 0,
             time: 8 * 60,
