@@ -153,23 +153,28 @@
 <body class="relative flex flex-col justify-between h-screen text-white">
 
     <div id="start-screen" class="absolute inset-0 z-[100] bg-zinc-950 flex flex-col items-center justify-center overflow-hidden transition-opacity duration-500">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(225,29,72,0.15)_0%,transparent_60%)] pointer-events-none"></div>
-    <div class="absolute top-1/4 left-1/4 w-32 h-32 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
-    <div class="absolute bottom-1/4 right-1/4 w-32 h-32 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(234,179,8,0.12)_0%,transparent_60%)] pointer-events-none"></div>
+    <div class="absolute top-1/4 left-1/4 w-40 h-40 bg-amber-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-40 h-40 bg-yellow-600/10 rounded-full blur-3xl pointer-events-none"></div>
 
-    <div class="text-center z-10 mb-16 mt-[-10vh]">
-        <h1 class="text-5xl font-black mb-2 tracking-wider bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">
-            不准動！
+    <div class="text-center z-10 mb-16 mt-[-5vh]">
+        
+        <div class="flex justify-center mb-3 text-yellow-500 text-6xl drop-shadow-[0_0_20px_rgba(234,179,8,0.5)]">
+            <i class="fa-solid fa-shoe-prints -rotate-45"></i>
+            <i class="fa-solid fa-bug ml-4 rotate-12 text-amber-700"></i>
+        </div>
+        
+        <h1 class="text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-yellow-300 to-amber-600 drop-shadow-lg tracking-wider leading-tight">
+            不准動！<br>小強大作戰
         </h1>
-        <h2 class="text-6xl font-black tracking-widest bg-gradient-to-r from-red-500 via-rose-400 to-orange-500 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(225,29,72,0.6)]">
-            小強大作戰
-        </h2>
-        <p class="text-zinc-500 mt-4 font-mono text-sm tracking-[0.3em]">COCKROACH SMASH</p>
+        
+        <p class="text-zinc-600 mt-4 font-mono text-xs tracking-[0.35em] uppercase">COCKROACH SMASH</p>
     </div>
 
-    <button onclick="enterGameFromStart()" class="z-10 group relative bg-black/40 backdrop-blur-md text-white font-bold text-xl py-4 px-12 rounded-full border border-red-500/50 hover:border-red-400 hover:bg-red-950/60 shadow-[0_0_15px_rgba(225,29,72,0.4),inset_0_1px_2px_rgba(255,255,255,0.15)] active:scale-95 transition-all duration-300 animate-pulse hover:animate-none">
-        <div class="absolute inset-0 bg-gradient-to-r from-rose-600/20 to-red-700/20 rounded-full pointer-events-none"></div>
-        <span class="tracking-[0.2em] drop-shadow-[0_0_8px_rgba(248,113,113,0.8)]">點擊進入遊戲</span>
+    <button onclick="enterGameFromStart()" class="z-10 group relative bg-black/40 backdrop-blur-md text-white font-bold text-xl py-4 px-12 rounded-full border border-amber-500/40 hover:border-amber-400 hover:bg-amber-950/40 shadow-[0_0_15px_rgba(245,158,11,0.2),inset_0_1px_2px_rgba(255,255,255,0.15)] active:scale-95 transition-all duration-300 animate-pulse hover:animate-none">
+        <div class="absolute inset-0 bg-gradient-to-r from-amber-600/15 to-yellow-600/15 rounded-full pointer-events-none"></div>
+        <span class="tracking-[0.2em] text-yellow-100 group-hover:text-white drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]">點擊進入遊戲</span>
     </button>
 
     <div class="absolute bottom-6 left-0 right-0 text-center z-10 pointer-events-none select-none">
