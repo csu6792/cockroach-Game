@@ -2668,7 +2668,7 @@ function equipBorder(borderId) {
         // 1. 宣告兩首不同的音樂
         const bgm = new Audio('bgm.mp3'); 
         bgm.loop = true;  
-        bgm.volume = 0.5; 
+        bgm.volume = 0.4; 
 
         const shopBgm = new Audio('shop_bgm.mp3'); // 🌟 新增商城音樂
         shopBgm.loop = true;
@@ -2676,7 +2676,11 @@ function equipBorder(borderId) {
 
         const pvpBgm = new Audio('pvp_bgm.mp3'); 
         pvpBgm.loop = true;  
-        pvpBgm.volume = 0.5; 
+        pvpBgm.volume = 0.4; 
+
+        const fireBgm = new Audio('fire_bgm.mp3'); 
+        fireBgm.loop = true;  
+        fireBgm.volume = 0.4;
 
         // 2. 智慧狀態追蹤
         let bgmState = {
