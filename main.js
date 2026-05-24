@@ -2418,7 +2418,8 @@ function equipBorder(borderId) {
                 document.getElementById('game-over-modal').classList.remove('hidden');
                 document.getElementById('result-score').textContent = gameState.score;
                 document.getElementById('result-coins').textContent = gameState.sessionCoins;
-            }
+                switchBGM(bgm);
+			}
         }
 
         function updateBattleUI() {
@@ -2488,6 +2489,7 @@ function equipBorder(borderId) {
             
             gameState.active=true; playSound.success();
             gameState.timeSpeed = 5; 
+			switchBGM(fireBgm);
         }
 
         function startSandboxSession() {
